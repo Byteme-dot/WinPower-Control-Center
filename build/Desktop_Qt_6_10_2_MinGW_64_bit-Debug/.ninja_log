@@ -1,0 +1,27 @@
+# ninja log v6
+25	471	7945845579340489	OMENHWCC_en_US.qm	ee5735f9e9fb86cc
+25	471	7945845579340489	C:/Users/abhi_devnull/Documents/OMENHWCC/build/Desktop_Qt_6_10_2_MinGW_64_bit-Debug/OMENHWCC_en_US.qm	ee5735f9e9fb86cc
+422	1689	7956939298067053	CMakeFiles/OMENHWCC.dir/hardwaremonitor.cpp.obj	5d3f7ca6f775cc0a
+24	516	7957034892860766	OMENHWCC_autogen/timestamp	e7bd36cc0d2e62a8
+24	516	7957034892860766	OMENHWCC_autogen/mocs_compilation.cpp	e7bd36cc0d2e62a8
+24	516	7957034892860766	C:/Users/abhi_devnull/Documents/OMENHWCC/build/Desktop_Qt_6_10_2_MinGW_64_bit-Debug/OMENHWCC_autogen/timestamp	e7bd36cc0d2e62a8
+24	516	7957034892860766	C:/Users/abhi_devnull/Documents/OMENHWCC/build/Desktop_Qt_6_10_2_MinGW_64_bit-Debug/OMENHWCC_autogen/mocs_compilation.cpp	e7bd36cc0d2e62a8
+1264	1703	7945845591660210	.qt/rcc/qrc_OMENHWCC_translations.cpp	54d37abc41d87489
+1264	1703	7945845591660210	C:/Users/abhi_devnull/Documents/OMENHWCC/build/Desktop_Qt_6_10_2_MinGW_64_bit-Debug/.qt/rcc/qrc_OMENHWCC_translations.cpp	54d37abc41d87489
+1738	1864	7945845592182106	CMakeFiles/OMENHWCC.dir/build/Desktop_Qt_6_10_2_MinGW_64_bit-Debug/.qt/rcc/qrc_OMENHWCC_translations.cpp.obj	61ca12b2f2b582b5
+517	2373	7957034897796508	CMakeFiles/OMENHWCC.dir/mainwindow.cpp.obj	7e8f2fe8dd11d92b
+1030	2946	7956993234069963	CMakeFiles/OMENHWCC.dir/OMENHWCC_autogen/mocs_compilation.cpp.obj	45cd0357030798ea
+1040	2986	7956993234170145	CMakeFiles/OMENHWCC.dir/main.cpp.obj	b52376332bc4d5b5
+2373	2757	7957034916352676	OMENHWCC.exe	67f58bf6a3b060a3
+31	518	7957036111465786	OMENHWCC_autogen/timestamp	e7bd36cc0d2e62a8
+31	518	7957036111465786	OMENHWCC_autogen/mocs_compilation.cpp	e7bd36cc0d2e62a8
+31	518	7957036111465786	C:/Users/abhi_devnull/Documents/OMENHWCC/build/Desktop_Qt_6_10_2_MinGW_64_bit-Debug/OMENHWCC_autogen/timestamp	e7bd36cc0d2e62a8
+31	518	7957036111465786	C:/Users/abhi_devnull/Documents/OMENHWCC/build/Desktop_Qt_6_10_2_MinGW_64_bit-Debug/OMENHWCC_autogen/mocs_compilation.cpp	e7bd36cc0d2e62a8
+519	2474	7957036116356033	CMakeFiles/OMENHWCC.dir/mainwindow.cpp.obj	7e8f2fe8dd11d92b
+2474	2868	7957036135896795	OMENHWCC.exe	67f58bf6a3b060a3
+18	445	7957036761978819	OMENHWCC_autogen/timestamp	e7bd36cc0d2e62a8
+18	445	7957036761978819	OMENHWCC_autogen/mocs_compilation.cpp	e7bd36cc0d2e62a8
+18	445	7957036761978819	C:/Users/abhi_devnull/Documents/OMENHWCC/build/Desktop_Qt_6_10_2_MinGW_64_bit-Debug/OMENHWCC_autogen/timestamp	e7bd36cc0d2e62a8
+18	445	7957036761978819	C:/Users/abhi_devnull/Documents/OMENHWCC/build/Desktop_Qt_6_10_2_MinGW_64_bit-Debug/OMENHWCC_autogen/mocs_compilation.cpp	e7bd36cc0d2e62a8
+446	2260	7957036766257243	CMakeFiles/OMENHWCC.dir/mainwindow.cpp.obj	7e8f2fe8dd11d92b
+2260	2729	7957036784398675	OMENHWCC.exe	67f58bf6a3b060a3
