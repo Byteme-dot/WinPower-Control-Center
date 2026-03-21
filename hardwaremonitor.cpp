@@ -77,6 +77,4 @@ void HardwareMonitor::applyPowerMode(QString powerMode){
     QProcess process;
     process.start("powercfg",QStringList() << "/setactive"<<guid);
     process.waitForFinished();
-    qDebug() << process.readAllStandardOutput();
-    qDebug() << process.readAllStandardError();
 }

@@ -12,7 +12,6 @@ MainWindow::MainWindow(QWidget *parent)
 {
 
     ui->setupUi(this);
-    qDebug() << "NEW VERSION RUNNING";
     ui->modeLabel->setText("Mode: " + monitor.getMode());
     ui->balancedActStatus->setText("(active)");
     ui->ecoActStatus->setText("");
