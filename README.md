@@ -13,39 +13,54 @@ This project aims to provide control over performance modes, fan speeds, and sys
 
 ## 📦 Versions
 
-### 🔹 v0.1
+### 🔹 v0.2 (Current)
 
-**Initial working prototype**
+**First system-integrated version**
 
-Features:
+#### ✨ Features:
 
 * Qt-based UI
-* Mode switching (Eco / Balanced / Performance)
+* Mode switching:
+
+  * Eco
+  * Balanced
+  * Performance
+  * Ultimate Performance
+* **Real Windows Power Plan Control (powercfg)**
+* **Admin privilege detection & UAC relaunch**
+* "Run as Admin" button
+* Power scheme sync toggle (checkbox)
 * Simulated CPU & GPU temperatures
 * Simulated fan speeds
 * Smooth value transitions (anti-jump)
-* Button hover + active styling
-* Basic UI/UX improvements
+* Active mode UI feedback
+* Button hover & styling improvements
+
+---
+
+### 🔹 v0.1
+
+**Initial prototype**
+
+* Qt-based UI
+* Mode switching (Eco / Balanced / Performance)
+* Simulated temps and fan speeds
+* Basic UI styling
 
 ---
 
 ## 🎯 Planned Features
 
-### 🔸 v0.2
-
-* System tray support
-* UI improvements
-* Settings panel
-
 ### 🔸 v0.3
 
-* Windows power plan integration
-* Map modes to system power profiles
+* Detect current system power plan automatically
+* Sync UI with actual system state
+* UI polish and improvements
 
 ### 🔸 v0.5+
 
 * Real hardware monitoring (CPU/GPU temps)
-* Improved data handling
+* Better data handling
 
 ### 🔸 v1.0 (Goal)
 
@@ -59,13 +74,16 @@ Features:
 
 * C++
 * Qt (Qt Widgets)
+* Windows API
+* QProcess (system commands)
 
 ---
 
-## 📌 Notes about current version (v0.1)
+## 📌 Notes
 
-* Currently uses simulated data (no real hardware control yet)
-* Future versions will gradually add real system interaction
+* Power plan control requires **administrator privileges**
+* Uses simulated hardware values (real hardware integration planned)
+* Built as a learning project for system-level application development
 
 ---
 
