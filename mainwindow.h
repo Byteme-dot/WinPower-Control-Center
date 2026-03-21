@@ -20,8 +20,10 @@ public:
 
 private:
     HardwareMonitor monitor;
+
     void updateStats();
     Ui::MainWindow *ui;
+    bool isAdmin;
     void updateModeUI();
     int targetCpuTemp;
     int targetGpuTemp;

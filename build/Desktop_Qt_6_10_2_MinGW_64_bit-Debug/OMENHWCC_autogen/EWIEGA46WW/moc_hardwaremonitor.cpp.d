@@ -1,5 +1,5 @@
-C:/Users/abhi_devnull/Documents/OMENHWCC/build/Desktop_Qt_6_10_2_MinGW_64_bit-Debug/OMENHWCC_autogen/EWIEGA46WW/moc_hardwaremonitor.cpp: C:/Users/abhi_devnull/Documents/OMENHWCC/hardwaremonitor.h \
-  C:/Users/abhi_devnull/Documents/OMENHWCC/build/Desktop_Qt_6_10_2_MinGW_64_bit-Debug/OMENHWCC_autogen/moc_predefs.h \
+C:/Users/abhi_devnull/Documents/GitHub/OMENHWCC/build/Desktop_Qt_6_10_2_MinGW_64_bit-Debug/OMENHWCC_autogen/EWIEGA46WW/moc_hardwaremonitor.cpp: C:/Users/abhi_devnull/Documents/GitHub/OMENHWCC/hardwaremonitor.h \
+  C:/Users/abhi_devnull/Documents/GitHub/OMENHWCC/build/Desktop_Qt_6_10_2_MinGW_64_bit-Debug/OMENHWCC_autogen/moc_predefs.h \
   C:/Qt/6.10.2/mingw_64/include/QtCore/QObject \
   C:/Qt/6.10.2/mingw_64/include/QtCore/q17memory.h \
   C:/Qt/6.10.2/mingw_64/include/QtCore/q20functional.h \

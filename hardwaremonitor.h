@@ -16,6 +16,7 @@ public:
     int getGpuFan();
     void setMode(QString);
     QString getMode();
+    void applyPowerMode(QString);
 };
 
 #endif

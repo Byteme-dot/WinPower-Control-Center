@@ -12,6 +12,7 @@ qt_add_executable(OMENHWCC
     mainwindow.h
     mainwindow.ui
     hardwaremonitor.h hardwaremonitor.cpp
+    manageadmin.h manageadmin.cpp
 )
 
 qt_add_translations(
