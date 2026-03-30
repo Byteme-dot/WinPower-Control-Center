@@ -1,7 +1,7 @@
-# OMEN Hardware Control Center (WIP)
+# WinPower Control Center (WIP)
 
-A custom open-source control center for HP OMEN laptops.
-This project aims to provide control over performance modes, fan speeds, and system behavior without relying on OMEN Gaming Hub.
+A custom open-source control center for all Windows devices.
+This project aims to provide control over performance modes and reading accurate system sensors while having minimal resource footprint
 
 ---
 
@@ -66,7 +66,6 @@ This project aims to provide control over performance modes, fan speeds, and sys
 
 * Control OMEN performance modes
 * Fan control (EC level)
-* Replace OMEN Gaming Hub functionality
 
 ---
 
