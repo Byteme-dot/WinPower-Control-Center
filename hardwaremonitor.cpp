@@ -4,6 +4,7 @@
 HardwareMonitor::HardwareMonitor(QObject *parent)
     : QObject(parent)
 {
+    currentMode = detectPowerMode();
 }
 
 int HardwareMonitor::getCpuTemp(){
@@ -77,4 +78,41 @@ void HardwareMonitor::applyPowerMode(QString powerMode){
     QProcess process;
     process.start("powercfg",QStringList() << "/setactive"<<guid);
     process.waitForFinished();
+}
+
+
+
+QString HardwareMonitor::detectPowerMode(){
+    QString systemPowerMode;
+    QProcess process;
+    process.start("powercfg", QStringList() << "/getactivescheme");
+    process.waitForFinished();
+
+    systemPowerMode = process.readAllStandardOutput();
+
+    if(systemPowerMode.contains("a1841308")){
+        return("Eco");
+    }else if(systemPowerMode.contains("381b4222")){
+        return("Balanced");
+    }else if(systemPowerMode.contains("8c5e7fda")){
+        return("Performance");
+    }else if(systemPowerMode.contains("e9a42b02")){
+        return("UltimatePerformance");
+    }else{
+        return("InvalidScheme");
+    }
+}
+
+bool HardwareMonitor::isUltimateSupported(){
+    QProcess process;
+    process.start("powercfg", QStringList() << "/list");
+    process.waitForFinished();
+
+    QString output = process.readAllStandardOutput();
+
+    if(output.contains("e9a42b02")){
+        return true;
+    }else{
+        return false;
+    }
 }

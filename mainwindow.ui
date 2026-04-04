@@ -10,6 +10,12 @@
     <height>600</height>
    </rect>
   </property>
+  <property name="font">
+   <font>
+    <bold>false</bold>
+    <kerning>false</kerning>
+   </font>
+  </property>
   <property name="windowTitle">
    <string>MainWindow</string>
   </property>
@@ -121,8 +127,8 @@
    <widget class="QLabel" name="label">
     <property name="geometry">
      <rect>
-      <x>180</x>
-      <y>10</y>
+      <x>170</x>
+      <y>20</y>
       <width>401</width>
       <height>41</height>
      </rect>
@@ -131,10 +137,11 @@
      <font>
       <pointsize>20</pointsize>
       <bold>true</bold>
+      <kerning>false</kerning>
      </font>
     </property>
     <property name="text">
-     <string>OMEN CONTROL CENTER</string>
+     <string>WinPower Control Center</string>
     </property>
    </widget>
    <widget class="QLabel" name="balancedActStatus">
@@ -149,6 +156,9 @@
     <property name="text">
      <string>(active)</string>
     </property>
+    <property name="alignment">
+     <set>Qt::AlignmentFlag::AlignCenter</set>
+    </property>
    </widget>
    <widget class="QLabel" name="ecoActStatus">
     <property name="geometry">
@@ -161,6 +171,9 @@
     </property>
     <property name="text">
      <string>(active)</string>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignmentFlag::AlignCenter</set>
     </property>
    </widget>
    <widget class="QLabel" name="performanceActStatus">
@@ -175,18 +188,24 @@
     <property name="text">
      <string>(active)</string>
     </property>
+    <property name="alignment">
+     <set>Qt::AlignmentFlag::AlignCenter</set>
+    </property>
    </widget>
    <widget class="QLabel" name="ultPerformanceActStatus">
     <property name="geometry">
      <rect>
-      <x>590</x>
+      <x>565</x>
       <y>400</y>
-      <width>51</width>
+      <width>101</width>
       <height>20</height>
      </rect>
     </property>
     <property name="text">
      <string>(active)</string>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignmentFlag::AlignCenter</set>
     </property>
    </widget>
    <widget class="QPushButton" name="ultPerformanceButton">
@@ -241,6 +260,80 @@
      <string>Sync Power Scheme</string>
     </property>
    </widget>
+   <widget class="QCheckBox" name="autoSyncWithWindows">
+    <property name="geometry">
+     <rect>
+      <x>100</x>
+      <y>300</y>
+      <width>91</width>
+      <height>25</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Auto Sync</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="autoSyncInfo">
+    <property name="geometry">
+     <rect>
+      <x>70</x>
+      <y>303</y>
+      <width>21</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="sizePolicy">
+     <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+      <horstretch>0</horstretch>
+      <verstretch>0</verstretch>
+     </sizepolicy>
+    </property>
+    <property name="font">
+     <font>
+      <bold>true</bold>
+      <strikeout>false</strikeout>
+      <kerning>true</kerning>
+     </font>
+    </property>
+    <property name="autoFillBackground">
+     <bool>false</bool>
+    </property>
+    <property name="text">
+     <string>i</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="powerSchemeInfo">
+    <property name="geometry">
+     <rect>
+      <x>70</x>
+      <y>272</y>
+      <width>21</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="sizePolicy">
+     <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+      <horstretch>0</horstretch>
+      <verstretch>0</verstretch>
+     </sizepolicy>
+    </property>
+    <property name="font">
+     <font>
+      <bold>true</bold>
+      <strikeout>false</strikeout>
+      <kerning>true</kerning>
+     </font>
+    </property>
+    <property name="acceptDrops">
+     <bool>false</bool>
+    </property>
+    <property name="autoFillBackground">
+     <bool>false</bool>
+    </property>
+    <property name="text">
+     <string>i</string>
+    </property>
+   </widget>
   </widget>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">
@@ -256,7 +349,13 @@
      <string>OMEN HW MONITOR</string>
     </property>
    </widget>
+   <widget class="QMenu" name="menuv0_3">
+    <property name="title">
+     <string>v0.3</string>
+    </property>
+   </widget>
    <addaction name="menuOMEN_HW_MONITOR"/>
+   <addaction name="menuv0_3"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
  </widget>

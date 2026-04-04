@@ -44,8 +44,12 @@ public:
     QLabel *adminStatus;
     QPushButton *runAsAdminButton;
     QCheckBox *syncPowerSchemeCheckBox;
+    QCheckBox *autoSyncWithWindows;
+    QPushButton *autoSyncInfo;
+    QPushButton *powerSchemeInfo;
     QMenuBar *menubar;
     QMenu *menuOMEN_HW_MONITOR;
+    QMenu *menuv0_3;
     QStatusBar *statusbar;
 
     void setupUi(QMainWindow *MainWindow)
@@ -53,6 +57,10 @@ public:
         if (MainWindow->objectName().isEmpty())
             MainWindow->setObjectName("MainWindow");
         MainWindow->resize(800, 600);
+        QFont font;
+        font.setBold(false);
+        font.setKerning(false);
+        MainWindow->setFont(font);
         centralwidget = new QWidget(MainWindow);
         centralwidget->setObjectName("centralwidget");
         cpuTempLabel = new QLabel(centralwidget);
@@ -81,23 +89,28 @@ public:
         ecoButton->setGeometry(QRect(70, 370, 90, 29));
         label = new QLabel(centralwidget);
         label->setObjectName("label");
-        label->setGeometry(QRect(180, 10, 401, 41));
-        QFont font;
-        font.setPointSize(20);
-        font.setBold(true);
-        label->setFont(font);
+        label->setGeometry(QRect(170, 20, 401, 41));
+        QFont font1;
+        font1.setPointSize(20);
+        font1.setBold(true);
+        font1.setKerning(false);
+        label->setFont(font1);
         balancedActStatus = new QLabel(centralwidget);
         balancedActStatus->setObjectName("balancedActStatus");
         balancedActStatus->setGeometry(QRect(220, 400, 51, 20));
+        balancedActStatus->setAlignment(Qt::AlignmentFlag::AlignCenter);
         ecoActStatus = new QLabel(centralwidget);
         ecoActStatus->setObjectName("ecoActStatus");
         ecoActStatus->setGeometry(QRect(90, 400, 51, 20));
+        ecoActStatus->setAlignment(Qt::AlignmentFlag::AlignCenter);
         performanceActStatus = new QLabel(centralwidget);
         performanceActStatus->setObjectName("performanceActStatus");
         performanceActStatus->setGeometry(QRect(390, 400, 51, 20));
+        performanceActStatus->setAlignment(Qt::AlignmentFlag::AlignCenter);
         ultPerformanceActStatus = new QLabel(centralwidget);
         ultPerformanceActStatus->setObjectName("ultPerformanceActStatus");
-        ultPerformanceActStatus->setGeometry(QRect(590, 400, 51, 20));
+        ultPerformanceActStatus->setGeometry(QRect(565, 400, 101, 20));
+        ultPerformanceActStatus->setAlignment(Qt::AlignmentFlag::AlignCenter);
         ultPerformanceButton = new QPushButton(centralwidget);
         ultPerformanceButton->setObjectName("ultPerformanceButton");
         ultPerformanceButton->setGeometry(QRect(520, 370, 201, 29));
@@ -110,18 +123,46 @@ public:
         syncPowerSchemeCheckBox = new QCheckBox(centralwidget);
         syncPowerSchemeCheckBox->setObjectName("syncPowerSchemeCheckBox");
         syncPowerSchemeCheckBox->setGeometry(QRect(100, 270, 161, 25));
+        autoSyncWithWindows = new QCheckBox(centralwidget);
+        autoSyncWithWindows->setObjectName("autoSyncWithWindows");
+        autoSyncWithWindows->setGeometry(QRect(100, 300, 91, 25));
+        autoSyncInfo = new QPushButton(centralwidget);
+        autoSyncInfo->setObjectName("autoSyncInfo");
+        autoSyncInfo->setGeometry(QRect(70, 303, 21, 20));
+        QSizePolicy sizePolicy(QSizePolicy::Policy::Fixed, QSizePolicy::Policy::Fixed);
+        sizePolicy.setHorizontalStretch(0);
+        sizePolicy.setVerticalStretch(0);
+        sizePolicy.setHeightForWidth(autoSyncInfo->sizePolicy().hasHeightForWidth());
+        autoSyncInfo->setSizePolicy(sizePolicy);
+        QFont font2;
+        font2.setBold(true);
+        font2.setStrikeOut(false);
+        font2.setKerning(true);
+        autoSyncInfo->setFont(font2);
+        autoSyncInfo->setAutoFillBackground(false);
+        powerSchemeInfo = new QPushButton(centralwidget);
+        powerSchemeInfo->setObjectName("powerSchemeInfo");
+        powerSchemeInfo->setGeometry(QRect(70, 272, 21, 20));
+        sizePolicy.setHeightForWidth(powerSchemeInfo->sizePolicy().hasHeightForWidth());
+        powerSchemeInfo->setSizePolicy(sizePolicy);
+        powerSchemeInfo->setFont(font2);
+        powerSchemeInfo->setAcceptDrops(false);
+        powerSchemeInfo->setAutoFillBackground(false);
         MainWindow->setCentralWidget(centralwidget);
         menubar = new QMenuBar(MainWindow);
         menubar->setObjectName("menubar");
         menubar->setGeometry(QRect(0, 0, 800, 25));
         menuOMEN_HW_MONITOR = new QMenu(menubar);
         menuOMEN_HW_MONITOR->setObjectName("menuOMEN_HW_MONITOR");
+        menuv0_3 = new QMenu(menubar);
+        menuv0_3->setObjectName("menuv0_3");
         MainWindow->setMenuBar(menubar);
         statusbar = new QStatusBar(MainWindow);
         statusbar->setObjectName("statusbar");
         MainWindow->setStatusBar(statusbar);
 
         menubar->addAction(menuOMEN_HW_MONITOR->menuAction());
+        menubar->addAction(menuv0_3->menuAction());
 
         retranslateUi(MainWindow);
 
@@ -139,7 +180,7 @@ public:
         balancedButton->setText(QCoreApplication::translate("MainWindow", "Balanced Mode", nullptr));
         performanceButton->setText(QCoreApplication::translate("MainWindow", "Performance Mode", nullptr));
         ecoButton->setText(QCoreApplication::translate("MainWindow", "Eco Mode", nullptr));
-        label->setText(QCoreApplication::translate("MainWindow", "OMEN CONTROL CENTER", nullptr));
+        label->setText(QCoreApplication::translate("MainWindow", "WinPower Control Center", nullptr));
         balancedActStatus->setText(QCoreApplication::translate("MainWindow", "(active)", nullptr));
         ecoActStatus->setText(QCoreApplication::translate("MainWindow", "(active)", nullptr));
         performanceActStatus->setText(QCoreApplication::translate("MainWindow", "(active)", nullptr));
@@ -148,7 +189,11 @@ public:
         adminStatus->setText(QCoreApplication::translate("MainWindow", "Admin Status:", nullptr));
         runAsAdminButton->setText(QCoreApplication::translate("MainWindow", "Run As Admin", nullptr));
         syncPowerSchemeCheckBox->setText(QCoreApplication::translate("MainWindow", "Sync Power Scheme", nullptr));
+        autoSyncWithWindows->setText(QCoreApplication::translate("MainWindow", "Auto Sync", nullptr));
+        autoSyncInfo->setText(QCoreApplication::translate("MainWindow", "i", nullptr));
+        powerSchemeInfo->setText(QCoreApplication::translate("MainWindow", "i", nullptr));
         menuOMEN_HW_MONITOR->setTitle(QCoreApplication::translate("MainWindow", "OMEN HW MONITOR", nullptr));
+        menuv0_3->setTitle(QCoreApplication::translate("MainWindow", "v0.3", nullptr));
     } // retranslateUi
 
 };

@@ -9,14 +9,16 @@ class HardwareMonitor : public QObject
 
 public:
     explicit HardwareMonitor(QObject *parent = nullptr);
-    QString currentMode = "Balanced";
+    QString currentMode;
     int getCpuTemp();
     int getGpuTemp();
     int getCpuFan();
     int getGpuFan();
     void setMode(QString);
+    bool isUltimateSupported();
     QString getMode();
     void applyPowerMode(QString);
+    QString detectPowerMode();
 };
 
 #endif

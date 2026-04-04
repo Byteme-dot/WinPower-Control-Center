@@ -12,90 +12,110 @@ MainWindow::MainWindow(QWidget *parent)
 {
 
     ui->setupUi(this);
-    ui->modeLabel->setText("Mode: " + monitor.getMode());
-    ui->balancedActStatus->setText("(active)");
-    ui->ecoActStatus->setText("");
-    ui->performanceActStatus->setText("");
-    ui->ultPerformanceActStatus->setText("");
+// ------------------------ EXTRACTING AND SYNCING CURRENT WINDOW'S POWER SCHEME ---------------------------------
+
+    QString systemPowerScheme = monitor.getMode();
+    ui->modeLabel->setText("Mode: " + systemPowerScheme);
+
+// ===============================================================================================================
+
+// -------------- VERIFYING ADMIN, CHANGING ADMIN STATUS, ENABLE ADMIN BUTTON, ADMIN BUTTON FUNCTION -------------
 
     isAdmin = isRunningAsAdmin(); //Extracting function value into a variable
 
-    if(isRunningAsAdmin()){
+    if(isAdmin){
         ui->adminStatus->setText("Admin Mode: ON");
-        ui->runAsAdminButton->setVisible(!isAdmin);
+        ui->runAsAdminButton->setVisible(false);
     }else{
         ui->adminStatus->setText("Admin Mode: OFF");
-        ui->runAsAdminButton->setVisible(!isAdmin);
+        ui->runAsAdminButton->setVisible(true);
     }
 
-
-
     updateModeUI();
-    monitor.applyPowerMode(monitor.getMode());
 
     connect(ui->runAsAdminButton, &QPushButton::clicked, this, [this]() {
         relaunchAsAdmin();
     });
 
-    connect(ui->syncPowerSchemeCheckBox, &QCheckBox::clicked, this, [this](bool checked) {
-        if(isAdmin == false){
-            QMessageBox msgBox;
-            msgBox.setWindowTitle("Admin Required!");
-            msgBox.setText("Run app as admin to enable Power Scheme Syncing!");
-            QPushButton *runBtn = msgBox.addButton("Run as Admin", QMessageBox::AcceptRole);
-            msgBox.addButton("Cancel", QMessageBox::RejectRole);
 
-            msgBox.exec();
+    if(!isAdmin){
+        ui->syncPowerSchemeCheckBox->setEnabled(false);
+        ui->syncPowerSchemeCheckBox->setToolTip("Run as admin to enable this feature!");
+        ui->autoSyncWithWindows->setEnabled(false);
+        ui->autoSyncWithWindows->setToolTip("Enable Sync Power Scheme First !");
+    }else{
+        ui->syncPowerSchemeCheckBox->setEnabled(true);
+        ui->autoSyncWithWindows->setEnabled(false);
+        ui->autoSyncWithWindows->setToolTip("Enable Sync Power Scheme First !");
+    }
 
-            if(msgBox.clickedButton() == runBtn){
-                relaunchAsAdmin();
-            }
+// ================================================================================================================
 
-            ui->syncPowerSchemeCheckBox->setChecked(false);
-        }
-    });
+// ---------------------- CONNECTING UI CLICKED BUTTON TO ACTUAL LOGIC --------------------------------------------
+
+    ultSupport = monitor.isUltimateSupported();
+
+    if(!ultSupport){
+        ui->ultPerformanceButton->setEnabled(false);
+        ui->ultPerformanceButton->setToolTip("This mode is not supported by your device :(");
+        ui->ultPerformanceActStatus->setText("(Unsupported)");
+    }
 
     connect(ui->ecoButton, &QPushButton::clicked, this, [this]() {
-        monitor.setMode("Eco");
-        ui->modeLabel->setText("Mode: " + monitor.getMode());
-        updateModeUI();
-        if(ui->syncPowerSchemeCheckBox->isChecked()){
-            monitor.applyPowerMode(monitor.getMode());
-        }
+        changeMode("Eco");
     });
 
     connect(ui->balancedButton, &QPushButton::clicked, this, [this]() {
-        monitor.setMode("Balanced");
-        ui->modeLabel->setText("Mode: " + monitor.getMode());
-        updateModeUI();
-        if(ui->syncPowerSchemeCheckBox->isChecked()){
-            monitor.applyPowerMode(monitor.getMode());
-        }
+        changeMode("Balanced");
     });
 
     connect(ui->performanceButton, &QPushButton::clicked, this, [this]() {
-        monitor.setMode("Performance");
-        ui->modeLabel->setText("Mode: " + monitor.getMode());
-        updateModeUI();
-        if(ui->syncPowerSchemeCheckBox->isChecked()){
-            monitor.applyPowerMode(monitor.getMode());
-        }
+        changeMode("Performance");
     });
 
     connect(ui->ultPerformanceButton, &QPushButton::clicked, this, [this]() {
-        monitor.setMode("UltimatePerformance");
-        ui->modeLabel->setText("Mode: " + monitor.getMode());
-        updateModeUI();
-        if(ui->syncPowerSchemeCheckBox->isChecked()){
-            monitor.applyPowerMode(monitor.getMode());
+        changeMode("UltimatePerformance");
+    });
+
+    connect(ui->syncPowerSchemeCheckBox, &QCheckBox::toggled, this, [this](bool checked){
+        if(checked){
+            ui->autoSyncWithWindows->setEnabled(true);
+            ui->autoSyncWithWindows->setToolTip("");
+        }else{
+            ui->autoSyncWithWindows->setEnabled(false);
+            ui->autoSyncWithWindows->setChecked(false);
+            ui->autoSyncWithWindows->setToolTip("Enable Sync Power Scheme First !");
         }
     });
 
-    QTimer *timer = new QTimer(this);
+    connect(ui->autoSyncInfo, &QPushButton::clicked, this, [this](){
+        QMessageBox autoSyncMsgBox;
+        autoSyncMsgBox.setWindowTitle("Auto Sync Information");
+        autoSyncMsgBox.setText("When this button is checked (enabled) this will sync the Windows Power"
+                               " Scheme with the app every 3 seconds. If you make changes to the power schemes "
+                               "using the control panel, it will reflect in the app too. Keep off to avoid "
+                               "consuming more resources and if you are not going to change power schemes with any other way.");
+        autoSyncMsgBox.addButton("Okay", QMessageBox::AcceptRole);
+        autoSyncMsgBox.exec();
+    });
 
-    connect (timer, &QTimer:: timeout, this, &MainWindow::updateStats);
+    connect(ui->powerSchemeInfo, &QPushButton::clicked, this, [this](){
+        QMessageBox powerSchemeMsgBox;
+        powerSchemeMsgBox.setWindowTitle("Sync Power Scheme Information");
+        powerSchemeMsgBox.setText("When this button is checked (enabled) it will sync the Window's Power Scheme with"
+                                  " the app's power modes. To enable this button, you need to run this app As Admin!");
+        powerSchemeMsgBox.addButton("Okay", QMessageBox::AcceptRole);
+        powerSchemeMsgBox.exec();
+    });
 
-    timer->start(1000);
+// ================================================================================================================
+
+    QTimer *statsTimer = new QTimer(this);
+    QTimer *syncSchemeTimer = new QTimer(this);
+    connect (statsTimer, &QTimer:: timeout, this, &MainWindow::updateStats);
+    connect(syncSchemeTimer, &QTimer::timeout, this, &MainWindow::autoSyncPowerScheme);
+    statsTimer->start(1000);
+    syncSchemeTimer->start(3000);
 }
 
 void MainWindow::updateStats()
@@ -104,7 +124,7 @@ void MainWindow::updateStats()
     targetCpuTemp = monitor.getCpuTemp();
     targetGpuTemp = monitor.getGpuTemp();
     targetCpuFan = monitor.getCpuFan();
-    targetGpuFan = monitor.getCpuFan();
+    targetGpuFan = monitor.getGpuFan();
 
     cpuTempDisplay += (targetCpuTemp - cpuTempDisplay) /2 ;
     gpuTempDisplay += (targetGpuTemp - gpuTempDisplay) /2 ;
@@ -158,21 +178,33 @@ void MainWindow::updateModeUI(){
         ui->ecoActStatus->setText("(active)");
         ui->balancedActStatus->setText("");
         ui->performanceActStatus->setText("");
-        ui->ultPerformanceActStatus->setText("");
+        if(!ultSupport){
+            ui->ultPerformanceActStatus->setText("(Unsupported)");
+        }else{
+           ui->ultPerformanceActStatus->setText("");
+        }
         ui->ecoButton->setStyleSheet(ecoSelected);
 
     }else if(monitor.getMode() == "Balanced"){
         ui->ecoActStatus->setText("");
         ui->balancedActStatus->setText("(active)");
         ui->performanceActStatus->setText("");
-        ui->ultPerformanceActStatus->setText("");
+        if(!ultSupport){
+            ui->ultPerformanceActStatus->setText("(Unsupported)");
+        }else{
+            ui->ultPerformanceActStatus->setText("");
+        }
         ui->balancedButton->setStyleSheet(balancedSelected);
 
     }else if(monitor.getMode() == "Performance"){
         ui->ecoActStatus->setText("");
         ui->balancedActStatus->setText("");
         ui->performanceActStatus->setText("(active)");
-        ui->ultPerformanceActStatus->setText("");
+        if(!ultSupport){
+            ui->ultPerformanceActStatus->setText("(Unsupported)");
+        }else{
+            ui->ultPerformanceActStatus->setText("");
+        }
         ui->performanceButton->setStyleSheet(performanceSelected);
     }else if(monitor.getMode() == "UltimatePerformance"){
         ui->ecoActStatus->setText("");
@@ -180,6 +212,36 @@ void MainWindow::updateModeUI(){
         ui->performanceActStatus->setText("");
         ui->ultPerformanceActStatus->setText("(active)");
         ui->ultPerformanceButton->setStyleSheet(ultPerformanceSelected);
+    }
+}
+
+void MainWindow::changeMode(QString mode){
+
+    if(mode == "UltimatePerformance" && !ultSupport){
+        QMessageBox::information(this, "Not Supported", "Ultimate Performance Mode is not supported by your device!");
+    }else{
+        monitor.setMode(mode);
+        ui->modeLabel->setText("Mode: " + mode);
+        updateModeUI();
+        if(ui->syncPowerSchemeCheckBox->isChecked() && isAdmin){
+            monitor.applyPowerMode(mode);
+            ui->modeLabel->setText("Mode: " + mode + " (synced)");
+        }
+    }
+}
+
+void MainWindow::autoSyncPowerScheme(){
+    if(!(ui->syncPowerSchemeCheckBox->isChecked() && isAdmin)){
+        return;
+    }
+
+    if(ui->autoSyncWithWindows->isChecked()){
+        QString systemScheme = monitor.detectPowerMode();
+        if(systemScheme != monitor.getMode()){
+            monitor.setMode(systemScheme);
+            ui->modeLabel->setText("Mode: " + systemScheme);
+            updateModeUI();
+        }
     }
 }
 

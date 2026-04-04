@@ -20,8 +20,10 @@ public:
 
 private:
     HardwareMonitor monitor;
-
+    bool ultSupport;
+    void autoSyncPowerScheme();
     void updateStats();
+    void changeMode(QString);
     Ui::MainWindow *ui;
     bool isAdmin;
     void updateModeUI();
