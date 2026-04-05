@@ -102,7 +102,7 @@ This project aims to provide control over system power modes and (in future) rea
 
 1. Build the project using Qt Creator (Debug or Release)
 
-2. Navigate to the build directory: build/Desktop_Qt_6_10_2_MinGW_64_bit-Debug/debug
+2. Navigate to the build directory: /build/
 
 3. Run: WinPowerControlCenter.exe
 
