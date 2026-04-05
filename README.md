@@ -59,6 +59,8 @@ This project aims to provide control over system power modes and (in future) rea
 
 * If running the app outside Qt Creator, ensure Qt dependencies are deployed using `windeployqt`
 
+---
+
 ### 🔹 v0.3.1 (Bug Fix)
 
 * Fixed Ultimate Performance detection (no longer relies on fixed GUID)
