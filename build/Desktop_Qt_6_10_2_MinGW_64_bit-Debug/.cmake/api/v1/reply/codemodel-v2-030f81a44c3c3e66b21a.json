@@ -1,0 +1,115 @@
+{
+	"configurations" : 
+	[
+		{
+			"directories" : 
+			[
+				{
+					"build" : ".",
+					"hasInstallRule" : true,
+					"jsonFile" : "directory-.-Debug-60f20712eb74deeee9a8.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.16"
+					},
+					"projectIndex" : 0,
+					"source" : ".",
+					"targetIndexes" : 
+					[
+						0,
+						1,
+						2,
+						3,
+						4,
+						5,
+						6
+					]
+				}
+			],
+			"name" : "Debug",
+			"projects" : 
+			[
+				{
+					"directoryIndexes" : 
+					[
+						0
+					],
+					"name" : "OMENHWCC",
+					"targetIndexes" : 
+					[
+						0,
+						1,
+						2,
+						3,
+						4,
+						5,
+						6
+					]
+				}
+			],
+			"targets" : 
+			[
+				{
+					"directoryIndex" : 0,
+					"id" : "OMENHWCC::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-OMENHWCC-Debug-dff805b5db7d73bf16e9.json",
+					"name" : "OMENHWCC",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "OMENHWCC_autogen::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-OMENHWCC_autogen-Debug-fc8184d854ffddc3360e.json",
+					"name" : "OMENHWCC_autogen",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "OMENHWCC_autogen_timestamp_deps::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-OMENHWCC_autogen_timestamp_deps-Debug-bae4fb152730b3763897.json",
+					"name" : "OMENHWCC_autogen_timestamp_deps",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "OMENHWCC_lrelease::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-OMENHWCC_lrelease-Debug-c3168f5538c8d9f05c95.json",
+					"name" : "OMENHWCC_lrelease",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "OMENHWCC_lupdate::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-OMENHWCC_lupdate-Debug-8d84815522d693cb5f2d.json",
+					"name" : "OMENHWCC_lupdate",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "release_translations::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-release_translations-Debug-dfeab709e3f553017781.json",
+					"name" : "release_translations",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "update_translations::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-update_translations-Debug-87da033c2f7428b838bb.json",
+					"name" : "update_translations",
+					"projectIndex" : 0
+				}
+			]
+		}
+	],
+	"kind" : "codemodel",
+	"paths" : 
+	{
+		"build" : "C:/Users/abhi_devnull/Documents/GitHub/OMENHWCC/build/Desktop_Qt_6_10_2_MinGW_64_bit-Debug",
+		"source" : "C:/Users/abhi_devnull/Documents/GitHub/OMENHWCC"
+	},
+	"version" : 
+	{
+		"major" : 2,
+		"minor" : 7
+	}
+}

@@ -19,6 +19,7 @@ public:
     QString getMode();
     void applyPowerMode(QString);
     QString detectPowerMode();
+    void tryEnablingUltimateMode();
 };
 
 #endif

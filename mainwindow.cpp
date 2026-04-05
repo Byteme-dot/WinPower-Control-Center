@@ -54,12 +54,41 @@ MainWindow::MainWindow(QWidget *parent)
 // ---------------------- CONNECTING UI CLICKED BUTTON TO ACTUAL LOGIC --------------------------------------------
 
     ultSupport = monitor.isUltimateSupported();
+    ultTried = false;
 
     if(!ultSupport){
         ui->ultPerformanceButton->setEnabled(false);
-        ui->ultPerformanceButton->setToolTip("This mode is not supported by your device :(");
-        ui->ultPerformanceActStatus->setText("(Unsupported)");
+        ui->tryEnableUltimateButton->setVisible(true);
+        ui->ultPerformanceButton->setToolTip("Press try enabling button to check for support!");
+        if(!isAdmin){
+            ui->tryEnableUltimateButton->setToolTip("Run as admin to try enabling!");
+            ui->tryEnableUltimateButton->setEnabled(false);
+        }else{
+            ui->tryEnableUltimateButton->setEnabled(true);
+        }
+        ui->ultPerformanceActStatus->setText("(maybe supported, unchecked)");
+    }else{
+        ui->tryEnableUltimateButton->setVisible(false);
     }
+
+    connect(ui->tryEnableUltimateButton, &QPushButton::clicked, this, [this](){
+        ultTried = true;
+        if(isAdmin){
+            monitor.tryEnablingUltimateMode();
+            bool check = monitor.isUltimateSupported();
+            if(check){
+                QMessageBox::information(this,"Success","Ultimate Peformance Mode Enabled!");
+                ui->tryEnableUltimateButton->setVisible(false);
+                ui->ultPerformanceButton->setEnabled(true);
+                ui->ultPerformanceActStatus->setText("");
+            }else{
+                ui->tryEnableUltimateButton->setVisible(false);
+                ui->ultPerformanceButton->setToolTip("Even after trying, your system still doesn't support ultimate performance!");
+                ui->ultPerformanceButton->setEnabled(false);
+                ui->ultPerformanceActStatus->setText("(unsupported, checked)");
+            }
+        }
+    });
 
     connect(ui->ecoButton, &QPushButton::clicked, this, [this]() {
         changeMode("Eco");

@@ -20,6 +20,7 @@ public:
 
 private:
     HardwareMonitor monitor;
+    bool ultTried;
     bool ultSupport;
     void autoSyncPowerScheme();
     void updateStats();

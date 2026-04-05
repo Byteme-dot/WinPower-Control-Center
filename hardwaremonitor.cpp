@@ -107,12 +107,17 @@ bool HardwareMonitor::isUltimateSupported(){
     QProcess process;
     process.start("powercfg", QStringList() << "/list");
     process.waitForFinished();
+    QString output = process.readAllStandardOutput().toLower();
 
-    QString output = process.readAllStandardOutput();
-
-    if(output.contains("e9a42b02")){
+    if(output.contains("ultimate performance")){
         return true;
     }else{
         return false;
     }
+}
+
+void HardwareMonitor::tryEnablingUltimateMode(){
+    QProcess process;
+    process.start("powercfg", QStringList() << "-duplicatescheme" << "e9a42b02-d5df-448d-aa00-03f14749eb61");
+    process.waitForFinished();
 }

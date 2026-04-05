@@ -19,6 +19,9 @@
   <property name="windowTitle">
    <string>MainWindow</string>
   </property>
+  <property name="layoutDirection">
+   <enum>Qt::LayoutDirection::LeftToRight</enum>
+  </property>
   <widget class="QWidget" name="centralwidget">
    <widget class="QLabel" name="cpuTempLabel">
     <property name="geometry">
@@ -89,9 +92,9 @@
     <property name="geometry">
      <rect>
       <x>190</x>
-      <y>370</y>
-      <width>121</width>
-      <height>29</height>
+      <y>350</y>
+      <width>131</width>
+      <height>41</height>
      </rect>
     </property>
     <property name="text">
@@ -102,9 +105,9 @@
     <property name="geometry">
      <rect>
       <x>340</x>
-      <y>370</y>
-      <width>151</width>
-      <height>29</height>
+      <y>350</y>
+      <width>161</width>
+      <height>41</height>
      </rect>
     </property>
     <property name="text">
@@ -114,10 +117,10 @@
    <widget class="QPushButton" name="ecoButton">
     <property name="geometry">
      <rect>
-      <x>70</x>
-      <y>370</y>
-      <width>90</width>
-      <height>29</height>
+      <x>60</x>
+      <y>350</y>
+      <width>101</width>
+      <height>41</height>
      </rect>
     </property>
     <property name="text">
@@ -147,8 +150,8 @@
    <widget class="QLabel" name="balancedActStatus">
     <property name="geometry">
      <rect>
-      <x>220</x>
-      <y>400</y>
+      <x>230</x>
+      <y>390</y>
       <width>51</width>
       <height>20</height>
      </rect>
@@ -163,8 +166,8 @@
    <widget class="QLabel" name="ecoActStatus">
     <property name="geometry">
      <rect>
-      <x>90</x>
-      <y>400</y>
+      <x>85</x>
+      <y>390</y>
       <width>51</width>
       <height>20</height>
      </rect>
@@ -180,7 +183,7 @@
     <property name="geometry">
      <rect>
       <x>390</x>
-      <y>400</y>
+      <y>390</y>
       <width>51</width>
       <height>20</height>
      </rect>
@@ -195,9 +198,9 @@
    <widget class="QLabel" name="ultPerformanceActStatus">
     <property name="geometry">
      <rect>
-      <x>565</x>
-      <y>400</y>
-      <width>101</width>
+      <x>540</x>
+      <y>390</y>
+      <width>181</width>
       <height>20</height>
      </rect>
     </property>
@@ -212,9 +215,9 @@
     <property name="geometry">
      <rect>
       <x>520</x>
-      <y>370</y>
-      <width>201</width>
-      <height>29</height>
+      <y>350</y>
+      <width>221</width>
+      <height>41</height>
      </rect>
     </property>
     <property name="text">
@@ -332,6 +335,30 @@
     </property>
     <property name="text">
      <string>i</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="tryEnableUltimateButton">
+    <property name="geometry">
+     <rect>
+      <x>580</x>
+      <y>325</y>
+      <width>91</width>
+      <height>21</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <italic>true</italic>
+      <bold>false</bold>
+      <underline>false</underline>
+      <kerning>false</kerning>
+     </font>
+    </property>
+    <property name="layoutDirection">
+     <enum>Qt::LayoutDirection::LeftToRight</enum>
+    </property>
+    <property name="text">
+     <string>Try Enabling</string>
     </property>
    </widget>
   </widget>
