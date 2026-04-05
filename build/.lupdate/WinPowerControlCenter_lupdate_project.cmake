@@ -1,0 +1,11 @@
+set(lupdate_project_file "C:/Users/abhi_devnull/Documents/GitHub/WinPower-Control-Center/CMakeLists.txt")
+set(lupdate_translations "C:/Users/abhi_devnull/Documents/GitHub/WinPower-Control-Center/WinPowerControlCenter_en_US.ts")
+set(lupdate_include_paths "")
+set(lupdate_sources "")
+set(lupdate_subproject_count 1)
+
+set(lupdate_subproject1_source_dir "C:/Users/abhi_devnull/Documents/GitHub/WinPower-Control-Center")
+set(lupdate_subproject1_include_paths "C:/Users/abhi_devnull/Documents/GitHub/WinPower-Control-Center/build/WinPowerControlCenter_autogen/include;C:/Qt/6.10.2/mingw_64/include/QtCore;C:/Qt/6.10.2/mingw_64/include;C:/Qt/6.10.2/mingw_64/mkspecs/win32-g++;C:/Qt/6.10.2/mingw_64/include;C:/Qt/6.10.2/mingw_64/include/QtWidgets;C:/Qt/6.10.2/mingw_64/include;C:/Qt/6.10.2/mingw_64/include/QtGui;C:/Qt/6.10.2/mingw_64/include")
+set(lupdate_subproject1_sources "C:/Users/abhi_devnull/Documents/GitHub/WinPower-Control-Center/build/WinPowerControlCenter_autogen/mocs_compilation.cpp;main.cpp;mainwindow.cpp;mainwindow.h;mainwindow.ui;hardwaremonitor.h;hardwaremonitor.cpp;manageadmin.h;manageadmin.cpp;C:/Users/abhi_devnull/Documents/GitHub/WinPower-Control-Center/build/.qt/rcc/WinPowerControlCenter_translations.qrc;C:/Users/abhi_devnull/Documents/GitHub/WinPower-Control-Center/build/WinPowerControlCenter_en_US.qm;C:/Users/abhi_devnull/Documents/GitHub/WinPower-Control-Center/build/.qt/rcc/qrc_WinPowerControlCenter_translations.cpp;C:/Users/abhi_devnull/Documents/GitHub/WinPower-Control-Center/build/WinPowerControlCenter_autogen/include/ui_mainwindow.h;C:/Users/abhi_devnull/Documents/GitHub/WinPower-Control-Center/build/WinPowerControlCenter_autogen/timestamp;C:/Users/abhi_devnull/Documents/GitHub/WinPower-Control-Center/build/WinPowerControlCenter_en_US.qm.rule;C:/Users/abhi_devnull/Documents/GitHub/WinPower-Control-Center/build/.qt/rcc/qrc_WinPowerControlCenter_translations.cpp.rule;C:/Users/abhi_devnull/Documents/GitHub/WinPower-Control-Center/build/WinPowerControlCenter_autogen/timestamp.rule")
+set(lupdate_subproject1_excluded "")
+set(lupdate_subproject1_autogen_dir "C:/Users/abhi_devnull/Documents/GitHub/WinPower-Control-Center/build/WinPowerControlCenter_autogen")

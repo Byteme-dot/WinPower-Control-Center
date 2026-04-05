@@ -5,6 +5,7 @@
 #include <QCoreApplication>
 #include <QMessageBox>
 #include "manageadmin.h"
+#define APP_VERSION "v0.3.1"
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -12,6 +13,7 @@ MainWindow::MainWindow(QWidget *parent)
 {
 
     ui->setupUi(this);
+    ui->versionLabel->setText("Version: " APP_VERSION);
 // ------------------------ EXTRACTING AND SYNCING CURRENT WINDOW'S POWER SCHEME ---------------------------------
 
     QString systemPowerScheme = monitor.getMode();

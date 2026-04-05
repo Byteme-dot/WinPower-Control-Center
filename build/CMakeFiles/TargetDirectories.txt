@@ -1,0 +1,13 @@
+C:/Users/abhi_devnull/Documents/GitHub/WinPower-Control-Center/build/CMakeFiles/WinPowerControlCenter.dir
+C:/Users/abhi_devnull/Documents/GitHub/WinPower-Control-Center/build/CMakeFiles/WinPowerControlCenter_lupdate.dir
+C:/Users/abhi_devnull/Documents/GitHub/WinPower-Control-Center/build/CMakeFiles/update_translations.dir
+C:/Users/abhi_devnull/Documents/GitHub/WinPower-Control-Center/build/CMakeFiles/WinPowerControlCenter_lrelease.dir
+C:/Users/abhi_devnull/Documents/GitHub/WinPower-Control-Center/build/CMakeFiles/release_translations.dir
+C:/Users/abhi_devnull/Documents/GitHub/WinPower-Control-Center/build/CMakeFiles/edit_cache.dir
+C:/Users/abhi_devnull/Documents/GitHub/WinPower-Control-Center/build/CMakeFiles/rebuild_cache.dir
+C:/Users/abhi_devnull/Documents/GitHub/WinPower-Control-Center/build/CMakeFiles/list_install_components.dir
+C:/Users/abhi_devnull/Documents/GitHub/WinPower-Control-Center/build/CMakeFiles/install.dir
+C:/Users/abhi_devnull/Documents/GitHub/WinPower-Control-Center/build/CMakeFiles/install/local.dir
+C:/Users/abhi_devnull/Documents/GitHub/WinPower-Control-Center/build/CMakeFiles/install/strip.dir
+C:/Users/abhi_devnull/Documents/GitHub/WinPower-Control-Center/build/CMakeFiles/WinPowerControlCenter_autogen_timestamp_deps.dir
+C:/Users/abhi_devnull/Documents/GitHub/WinPower-Control-Center/build/CMakeFiles/WinPowerControlCenter_autogen.dir

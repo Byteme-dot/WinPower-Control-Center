@@ -361,28 +361,19 @@
      <string>Try Enabling</string>
     </property>
    </widget>
-  </widget>
-  <widget class="QMenuBar" name="menubar">
-   <property name="geometry">
-    <rect>
-     <x>0</x>
-     <y>0</y>
-     <width>800</width>
-     <height>25</height>
-    </rect>
-   </property>
-   <widget class="QMenu" name="menuOMEN_HW_MONITOR">
-    <property name="title">
-     <string>OMEN HW MONITOR</string>
+   <widget class="QLabel" name="versionLabel">
+    <property name="geometry">
+     <rect>
+      <x>690</x>
+      <y>550</y>
+      <width>111</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>version</string>
     </property>
    </widget>
-   <widget class="QMenu" name="menuv0_3_1">
-    <property name="title">
-     <string>v0.3.1</string>
-    </property>
-   </widget>
-   <addaction name="menuOMEN_HW_MONITOR"/>
-   <addaction name="menuv0_3_1"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
   <action name="actionv0_3_1">
