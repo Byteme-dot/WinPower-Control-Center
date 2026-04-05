@@ -45,6 +45,20 @@ This project aims to provide control over system power modes and (in future) rea
 
 ---
 
+### 🔹 v0.3.2 (Stability & UI Fix Update)
+
+* Fixed application crash caused by incorrect UI initialization order
+* Fixed version macro issue causing runtime problems
+* Resolved build inconsistencies after project renaming
+* Corrected CMake configuration issues
+* Cleaned up UI (removed unused menu elements)
+* Improved version display placement
+* Updated README with accurate run instructions
+
+#### ⚠️ Notes:
+
+* If running the app outside Qt Creator, ensure Qt dependencies are deployed using `windeployqt`
+
 ### 🔹 v0.3.1 (Bug Fix)
 
 * Fixed Ultimate Performance detection (no longer relies on fixed GUID)
