@@ -376,15 +376,20 @@
      <string>OMEN HW MONITOR</string>
     </property>
    </widget>
-   <widget class="QMenu" name="menuv0_3">
+   <widget class="QMenu" name="menuv0_3_1">
     <property name="title">
-     <string>v0.3</string>
+     <string>v0.3.1</string>
     </property>
    </widget>
    <addaction name="menuOMEN_HW_MONITOR"/>
-   <addaction name="menuv0_3"/>
+   <addaction name="menuv0_3_1"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
+  <action name="actionv0_3_1">
+   <property name="text">
+    <string>v0.3.1</string>
+   </property>
+  </action>
  </widget>
  <resources/>
  <connections/>
