@@ -1,7 +1,8 @@
 # WinPower Control Center (WIP)
 
-A custom open-source control center for all Windows devices.
-This project aims to provide control over performance modes and reading accurate system sensors while having minimal resource footprint
+A custom open-source control center for Windows devices.
+
+This project aims to provide control over system power modes and (in future) real hardware monitoring, while keeping resource usage minimal.
 
 ---
 
@@ -13,23 +14,29 @@ This project aims to provide control over performance modes and reading accurate
 
 ## 📦 Versions
 
-### 🔹 v0.2 (Current)
+### 🔹 v0.3 (Latest Major Update)
 
-**First system-integrated version**
+**System-aware version with smarter behavior**
 
 #### ✨ Features:
 
 * Qt-based UI
 * Mode switching:
-
   * Eco
   * Balanced
   * Performance
-  * Ultimate Performance
-* **Real Windows Power Plan Control (powercfg)**
-* **Admin privilege detection & UAC relaunch**
+  * Ultimate Performance (with fallback handling)
+* Detects current Windows power plan on startup
+* Auto-sync with system power mode (optional)
+* Real-time UI updates when system settings change externally
+* Admin privilege detection & UAC relaunch
 * "Run as Admin" button
 * Power scheme sync toggle (checkbox)
+* Dependency-based controls (Auto Sync depends on Power Sync)
+* Ultimate Performance:
+  * Dynamic detection (no fixed GUID)
+  * "Try Enable" fallback button
+  * Proper unsupported handling
 * Simulated CPU & GPU temperatures
 * Simulated fan speeds
 * Smooth value transitions (anti-jump)
@@ -38,34 +45,77 @@ This project aims to provide control over performance modes and reading accurate
 
 ---
 
+### 🔹 v0.3.1 (Bug Fix)
+
+* Fixed Ultimate Performance detection (no longer relies on fixed GUID)
+* Improved compatibility across systems with duplicated schemes
+* Added fallback logic for enabling Ultimate mode
+* Improved UX for unsupported states
+
+---
+
+### 🔹 v0.2
+
+**First system-integrated version**
+
+* Qt-based UI
+* Mode switching (Eco / Balanced / Performance / Ultimate)
+* Real Windows Power Plan Control (powercfg)
+* Admin privilege detection & UAC relaunch
+* Power scheme sync toggle
+* Simulated system stats
+
+---
+
 ### 🔹 v0.1
 
 **Initial prototype**
 
 * Qt-based UI
-* Mode switching (Eco / Balanced / Performance)
-* Simulated temps and fan speeds
+* Mode switching
+* Simulated values
 * Basic UI styling
 
 ---
 
 ## 🎯 Planned Features
 
-### 🔸 v0.3
+### 🔸 v0.4
 
-* Detect current system power plan automatically
-* Sync UI with actual system state
-* UI polish and improvements
+* Real hardware monitoring (CPU/GPU temperatures)
+* Replace simulated data with actual sensor readings
 
 ### 🔸 v0.5+
 
-* Real hardware monitoring (CPU/GPU temps)
-* Better data handling
+* Improved data handling
+* Graphs / visualization
 
 ### 🔸 v1.0 (Goal)
 
-* Control OMEN performance modes
+* Advanced power control
 * Fan control (EC level)
+* Replace OEM control utilities (long-term goal)
+
+---
+
+## ▶️ How to Run
+
+1. Build the project using Qt Creator (Debug or Release)
+
+2. Navigate to the build directory: build/Desktop_Qt_6_10_2_MinGW_64_bit-Debug/debug
+
+3. Run: WinPowerControlCenter.exe
+
+---
+
+### ⚠️ Important Notes
+
+* Some features require **administrator privileges**
+  * Use the **"Run as Admin"** button inside the app  
+  * OR right-click the `.exe` → Run as administrator  
+
+* If the application fails to launch due to missing Qt DLLs:
+  * Run `windeployqt WinPowerControlCenter.exe` in the build folder
 
 ---
 
@@ -80,14 +130,12 @@ This project aims to provide control over performance modes and reading accurate
 
 ## 📌 Notes
 
-* Power plan control requires **administrator privileges**
 * Uses simulated hardware values (real hardware integration planned)
-* Built as a learning project for system-level application development
+* Designed as a learning project for system-level application development
 
 ---
 
 ## 🙌 Author
 
 Abhishek
-
----
+   
