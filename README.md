@@ -1,157 +1,164 @@
-# WinPower Control Center (WIP)
+# WinPower Control Center
 
-A custom open-source control center for Windows devices.
-
-This project aims to provide control over system power modes and (in future) real hardware monitoring, while keeping resource usage minimal.
+A lightweight, open-source control center for Windows devices, focused on power management and real-time hardware monitoring.
 
 ---
 
 ## 🚀 Current Status
 
-⚠️ Work in Progress (Learning + Development Project)
+⚠️ Work in Progress (Active Development)
+
+---
+
+## ✨ Features (v0.4)
+
+- Real-time CPU & GPU monitoring
+- Multi-GPU support (iGPU + dGPU)
+- Windows power mode control:
+  - Eco
+  - Balanced
+  - Performance
+  - Ultimate Performance
+- Detects current system power plan on startup
+- Optional sync with Windows power scheme
+- Admin privilege detection & UAC relaunch
+- "Run as Admin" button
+- Clean and responsive Qt-based UI
+- Smooth value updates (anti-jump transitions)
 
 ---
 
 ## 📦 Versions
 
-### 🔹 v0.3 (Latest Major Update)
+### 🔹 v0.4 (Latest)
+
+**Hardware Monitoring + Stability Update**
+
+#### ✨ New:
+- Integrated real hardware monitoring using SensorBridge
+- CPU usage, temperature, and clock speed (admin required)
+- GPU temperature, usage, and clock speed
+- Multi-GPU detection and dynamic handling
+- Removed simulated data
+
+#### 🛠 Improvements:
+- Fixed console window appearing on admin relaunch
+- Improved process handling (silent background execution)
+- More stable UI updates
+
+#### ⚠ Known Limitations:
+- CPU temperature may be approximate on some AMD Ryzen laptops
+- CPU speed may require administrator privileges for accurate values
+- Fan speed not implemented in this version
+
+---
+
+### 🔹 v0.3
 
 **System-aware version with smarter behavior**
 
-#### ✨ Features:
-
-* Qt-based UI
-* Mode switching:
-  * Eco
-  * Balanced
-  * Performance
-  * Ultimate Performance (with fallback handling)
-* Detects current Windows power plan on startup
-* Auto-sync with system power mode (optional)
-* Real-time UI updates when system settings change externally
-* Admin privilege detection & UAC relaunch
-* "Run as Admin" button
-* Power scheme sync toggle (checkbox)
-* Dependency-based controls (Auto Sync depends on Power Sync)
-* Ultimate Performance:
-  * Dynamic detection (no fixed GUID)
-  * "Try Enable" fallback button
-  * Proper unsupported handling
-* Simulated CPU & GPU temperatures
-* Simulated fan speeds
-* Smooth value transitions (anti-jump)
-* Active mode UI feedback
-* Button hover & styling improvements
+- Power mode switching
+- System power plan detection
+- Auto-sync with Windows
+- Admin handling
+- Simulated hardware values
 
 ---
 
-### 🔹 v0.3.2 (Stability & UI Fix Update)
+### 🔹 v0.3.2
 
-* Fixed application crash caused by incorrect UI initialization order
-* Fixed version macro issue causing runtime problems
-* Resolved build inconsistencies after project renaming
-* Corrected CMake configuration issues
-* Cleaned up UI (removed unused menu elements)
-* Improved version display placement
-* Updated README with accurate run instructions
-
-#### ⚠️ Notes:
-
-* If running the app outside Qt Creator, ensure Qt dependencies are deployed using `windeployqt`
+- Crash fixes
+- UI cleanup
+- Build fixes
+- Version handling improvements
 
 ---
 
-### 🔹 v0.3.1 (Bug Fix)
+### 🔹 v0.3.1
 
-* Fixed Ultimate Performance detection (no longer relies on fixed GUID)
-* Improved compatibility across systems with duplicated schemes
-* Added fallback logic for enabling Ultimate mode
-* Improved UX for unsupported states
+- Fixed Ultimate Performance detection
+- Improved compatibility
 
 ---
 
 ### 🔹 v0.2
 
-**First system-integrated version**
-
-* Qt-based UI
-* Mode switching (Eco / Balanced / Performance / Ultimate)
-* Real Windows Power Plan Control (powercfg)
-* Admin privilege detection & UAC relaunch
-* Power scheme sync toggle
-* Simulated system stats
+- First real system integration
+- Powercfg-based control
 
 ---
 
 ### 🔹 v0.1
 
-**Initial prototype**
-
-* Qt-based UI
-* Mode switching
-* Simulated values
-* Basic UI styling
-
----
-
-## 🎯 Planned Features
-
-### 🔸 v0.4
-
-* Real hardware monitoring (CPU/GPU temperatures)
-* Replace simulated data with actual sensor readings
-
-### 🔸 v0.5+
-
-* Improved data handling
-* Graphs / visualization
-
-### 🔸 v1.0 (Goal)
-
-* Advanced power control
-* Fan control (EC level)
-* Replace OEM control utilities (long-term goal)
+- Initial prototype
+- Simulated values
+- Basic UI
 
 ---
 
 ## ▶️ How to Run
 
-1. Build the project using Qt Creator (Debug or Release)
+1. Build using Qt Creator (Debug or Release)
 
-2. Navigate to the build directory: /build/
+2. Go to build directory:
 
 3. Run: WinPowerControlCenter.exe
 
 ---
 
-### ⚠️ Important Notes
+## ⚠️ Important Notes
 
-* Some features require **administrator privileges**
-  * Use the **"Run as Admin"** button inside the app  
-  * OR right-click the `.exe` → Run as administrator  
+- Some features require **Administrator privileges**
+  - Use the **"Run as Admin"** button  
+  - OR right-click → Run as administrator  
 
-* If the application fails to launch due to missing Qt DLLs:
-  * Run `windeployqt WinPowerControlCenter.exe` in the build folder
+- If app fails due to missing Qt DLLs: windeployqt WinPowerControlCenter.exe
 
 ---
 
 ## 🛠️ Tech Stack
 
-* C++
-* Qt (Qt Widgets)
-* Windows API
-* QProcess (system commands)
+- C++
+- Qt (Widgets)
+- Windows API
+- C# (.NET) — SensorBridge
+- LibreHardwareMonitor
+
+---
+
+## 🧠 Architecture
+
+Qt App (UI) ↓ 
+SensorBridge (C#) ↓ 
+LibreHardwareMonitor
+
+---
+
+## 🎯 Planned Features
+
+### 🔸 v0.5
+- Improved sensor accuracy
+- Persistent background monitoring (no repeated process spawn)
+- Better CPU data handling
+
+### 🔸 v0.6+
+- Graphs & visualization
+- Performance history
+
+### 🔸 v1.0 (Goal)
+- Advanced power control
+- Fan control (EC-level)
+- OEM utility replacement
 
 ---
 
 ## 📌 Notes
 
-* Uses simulated hardware values (real hardware integration planned)
-* Designed as a learning project for system-level application development
+- Designed as a learning + system-level development project
+- Focused on lightweight and efficient monitoring
 
 ---
 
 ## 🙌 Author
 
 Abhishek
-   
