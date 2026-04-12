@@ -1,6 +1,8 @@
 C:/Users/abhi_devnull/Documents/GitHub/WinPower-Control-Center/build/WinPowerControlCenter_autogen/EWIEGA46WW/moc_hardwaremonitor.cpp: C:/Users/abhi_devnull/Documents/GitHub/WinPower-Control-Center/hardwaremonitor.h \
   C:/Users/abhi_devnull/Documents/GitHub/WinPower-Control-Center/build/WinPowerControlCenter_autogen/moc_predefs.h \
+  C:/Qt/6.10.2/mingw_64/include/QtCore/QList \
   C:/Qt/6.10.2/mingw_64/include/QtCore/QObject \
+  C:/Qt/6.10.2/mingw_64/include/QtCore/QString \
   C:/Qt/6.10.2/mingw_64/include/QtCore/q17memory.h \
   C:/Qt/6.10.2/mingw_64/include/QtCore/q20functional.h \
   C:/Qt/6.10.2/mingw_64/include/QtCore/q20memory.h \

@@ -5,7 +5,9 @@
 #include <QCoreApplication>
 #include <QMessageBox>
 #include "manageadmin.h"
-#define APP_VERSION "v0.3.1"
+#include <QJsonDocument>
+#include <QJsonObject>
+#define APP_VERSION "v0.4"
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -18,7 +20,7 @@ MainWindow::MainWindow(QWidget *parent)
 
     QString systemPowerScheme = monitor.getMode();
     ui->modeLabel->setText("Mode: " + systemPowerScheme);
-
+    ui->gpu2GroupBox->setVisible(false);
 // ===============================================================================================================
 
 // -------------- VERIFYING ADMIN, CHANGING ADMIN STATUS, ENABLE ADMIN BUTTON, ADMIN BUTTON FUNCTION -------------
@@ -52,6 +54,18 @@ MainWindow::MainWindow(QWidget *parent)
     }
 
 // ================================================================================================================
+
+    auto stats = monitor.getSystemStats();
+    if(stats.gpus.size() >= 1) {
+        auto gpu1 = stats.gpus[0];
+        ui->gpuNameLabel->setToolTip(gpu1.name);
+    }
+    if(stats.gpus.size() >=2){
+        auto gpu2 = stats.gpus[1];
+        ui->gpu2NameLabel->setToolTip(gpu2.name);
+    }
+    ui->cpuNameLabel->setToolTip(stats.cpu.name);
+
 
 // ---------------------- CONNECTING UI CLICKED BUTTON TO ACTUAL LOGIC --------------------------------------------
 
@@ -145,39 +159,64 @@ MainWindow::MainWindow(QWidget *parent)
     QTimer *syncSchemeTimer = new QTimer(this);
     connect (statsTimer, &QTimer:: timeout, this, &MainWindow::updateStats);
     connect(syncSchemeTimer, &QTimer::timeout, this, &MainWindow::autoSyncPowerScheme);
-    statsTimer->start(1000);
+    statsTimer->start(3000);
     syncSchemeTimer->start(3000);
 }
 
 void MainWindow::updateStats()
 {
-    // Smoothing the values variance by taking target value and current value
-    targetCpuTemp = monitor.getCpuTemp();
-    targetGpuTemp = monitor.getGpuTemp();
-    targetCpuFan = monitor.getCpuFan();
-    targetGpuFan = monitor.getGpuFan();
+    auto stats = monitor.getSystemStats();
 
-    cpuTempDisplay += (targetCpuTemp - cpuTempDisplay) /2 ;
-    gpuTempDisplay += (targetGpuTemp - gpuTempDisplay) /2 ;
-    cpuFanDisplay += (targetCpuFan - cpuFanDisplay) /2 ;
-    gpuFanDisplay += (targetGpuFan - gpuFanDisplay) /2 ;
-
-    QString displayCpuTemp = QString::number(cpuTempDisplay);  //QString::number() means to_string()
-    QString displayGpuTemp = QString::number(gpuTempDisplay);  //QString is different from string
-    QString displayCpuFan = QString::number(cpuFanDisplay);
-    QString displayGpuFan = QString::number(gpuFanDisplay);
+    // ================= CPU =================
+    ui->cpuNameLabel->setText(stats.cpu.name);
 
     ui->cpuTempLabel->setText(
-        "CPU Temp: " + displayCpuTemp + " C");
+        QString::number(stats.cpu.temp, 'f', 1) + " °C");
 
-    ui->gpuTempLabel->setText(
-        "GPU Temp: " + displayGpuTemp + " C");
+    ui->cpuUsageLabel->setText(
+        QString::number(stats.cpu.usage, 'f', 1) + " %");
 
-    ui->cpuFanLabel->setText(
-        "CPU Fan: " + displayCpuFan + " RPM");
+    if(stats.cpu.speed > 100) // avoid tiny/invalid values
+        ui->cpuSpeedLabel->setText(QString::number(stats.cpu.speed, 'f', 0) + " MHz");
+    else
+        ui->cpuSpeedLabel->setText("--");
 
-    ui->gpuFanLabel->setText(
-        "GPU Fan: " + displayGpuFan + " RPM");
+    // ================= GPU =================
+    if(stats.gpus.size() >= 1){
+        auto gpu1 = stats.gpus[0];
+
+        ui->gpuNameLabel->setText(gpu1.name);
+        ui->gpuTempLabel->setText(QString::number(gpu1.temp, 'f', 1) + " °C");
+        ui->gpuUsageLabel->setText(QString::number(gpu1.usage, 'f', 1) + " %");
+
+        if(gpu1.speed > 100)
+            ui->gpuSpeedLabel->setText(QString::number(gpu1.speed, 'f', 0) + " MHz");
+        else
+            ui->gpuSpeedLabel->setText("--");
+    }
+
+    // ================= GPU 2 =================
+    if(stats.gpus.size() >= 2){
+        ui->gpu2GroupBox->setVisible(true);
+
+        auto gpu2 = stats.gpus[1];
+
+        ui->gpu2NameLabel->setText(gpu2.name);
+        ui->gpu2TempLabel->setText(QString::number(gpu2.temp, 'f', 1) + " °C");
+        ui->gpu2UsageLabel->setText(QString::number(gpu2.usage, 'f', 1) + " %");
+
+        if(gpu2.speed > 100)
+            ui->gpu2SpeedLabel->setText(QString::number(gpu2.speed, 'f', 0) + " MHz");
+        else
+            ui->gpu2SpeedLabel->setText("--");
+
+    } else {
+        ui->gpu2GroupBox->setVisible(false);
+    }
+
+    if(stats.gpus.isEmpty()){
+        ui->gpuNameLabel->setText("No GPU detected");
+    }
 }
 
 void MainWindow::updateModeUI(){
@@ -275,6 +314,7 @@ void MainWindow::autoSyncPowerScheme(){
         }
     }
 }
+
 
 MainWindow::~MainWindow()
 {

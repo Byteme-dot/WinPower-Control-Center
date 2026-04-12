@@ -28,6 +28,10 @@ private:
     Ui::MainWindow *ui;
     bool isAdmin;
     void updateModeUI();
+    int cpuUsage;
+    int gpuUsage;
+    int cpuSpeed;
+    int gpuSpeed;
     int targetCpuTemp;
     int targetGpuTemp;
     int targetCpuFan;
