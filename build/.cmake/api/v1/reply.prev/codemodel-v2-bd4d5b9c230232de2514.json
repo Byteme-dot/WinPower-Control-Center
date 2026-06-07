@@ -7,7 +7,7 @@
 				{
 					"build" : ".",
 					"hasInstallRule" : true,
-					"jsonFile" : "directory-.-Debug-bfe29efd70f958b8fa9b.json",
+					"jsonFile" : "directory-.-Debug-a14c59386bcfc34dd39f.json",
 					"minimumCMakeVersion" : 
 					{
 						"string" : "3.16"
@@ -52,7 +52,7 @@
 				{
 					"directoryIndex" : 0,
 					"id" : "WinPowerControlCenter::@6890427a1f51a3e7e1df",
-					"jsonFile" : "target-WinPowerControlCenter-Debug-080bc30a04d43a3c6bfa.json",
+					"jsonFile" : "target-WinPowerControlCenter-Debug-28998418da1295d322d3.json",
 					"name" : "WinPowerControlCenter",
 					"projectIndex" : 0
 				},

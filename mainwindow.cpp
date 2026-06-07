@@ -27,19 +27,13 @@ MainWindow::MainWindow(QWidget *parent)
 
     isAdmin = isRunningAsAdmin(); //Extracting function value into a variable
 
-    if(isAdmin){
-        ui->adminStatus->setText("Admin Mode: ON");
-        ui->runAsAdminButton->setVisible(false);
+    if (isAdmin){
+        ui->adminStatus->setText("Admin: 🟢");
     }else{
-        ui->adminStatus->setText("Admin Mode: OFF");
-        ui->runAsAdminButton->setVisible(true);
+        ui->adminStatus->setText("Admin: 🔴");
     }
 
     updateModeUI();
-
-    connect(ui->runAsAdminButton, &QPushButton::clicked, this, [this]() {
-        relaunchAsAdmin();
-    });
 
 
     if(!isAdmin){

@@ -1,7 +1,5 @@
 #include "manageadmin.h"
 #include <QString>
-#include <QCoreApplication>
-#include <QDebug>
 #include <windows.h>
 #include <QMessageBox>
 
@@ -27,17 +25,17 @@ bool isRunningAsAdmin(){
 
 void relaunchAsAdmin()
 {
-    QString appPath = QCoreApplication::applicationFilePath();
+    wchar_t path[MAX_PATH];
+    GetModuleFileNameW(NULL, path, MAX_PATH);
 
     SHELLEXECUTEINFO sei = { sizeof(sei) };
     sei.lpVerb = L"runas";
-    sei.lpFile = reinterpret_cast<LPCWSTR>(appPath.utf16());
+    sei.lpFile = path;
+    sei.lpParameters = L"--elevated";
     sei.nShow = SW_NORMAL;
 
     if (!ShellExecuteEx(&sei)) {
-        qDebug() << "Failed to relaunch as admin";
         return;
     }
-
-    QCoreApplication::quit();
+    ExitProcess(0);
 }

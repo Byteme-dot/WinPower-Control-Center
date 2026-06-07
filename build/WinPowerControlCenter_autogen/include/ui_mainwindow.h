@@ -71,7 +71,6 @@ public:
     QLabel *gpuNameLabel;
     QWidget *widget;
     QLabel *label;
-    QPushButton *runAsAdminButton;
     QLabel *adminStatus;
     QGroupBox *gpu2GroupBox;
     QLabel *label_22;
@@ -292,9 +291,6 @@ public:
         font5.setBold(true);
         font5.setKerning(false);
         label->setFont(font5);
-        runAsAdminButton = new QPushButton(widget);
-        runAsAdminButton->setObjectName("runAsAdminButton");
-        runAsAdminButton->setGeometry(QRect(660, 40, 101, 29));
         adminStatus = new QLabel(widget);
         adminStatus->setObjectName("adminStatus");
         adminStatus->setGeometry(QRect(620, 10, 131, 20));
@@ -400,7 +396,6 @@ public:
         gpuFanLabel->setText(QCoreApplication::translate("MainWindow", "- -", nullptr));
         gpuNameLabel->setText(QCoreApplication::translate("MainWindow", "Name", nullptr));
         label->setText(QCoreApplication::translate("MainWindow", "WinPower Control Center", nullptr));
-        runAsAdminButton->setText(QCoreApplication::translate("MainWindow", "Run As Admin", nullptr));
         adminStatus->setText(QCoreApplication::translate("MainWindow", "Admin Status:", nullptr));
         gpu2GroupBox->setTitle(QString());
         label_22->setText(QCoreApplication::translate("MainWindow", "GPU 2", nullptr));
