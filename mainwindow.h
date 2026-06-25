@@ -18,6 +18,9 @@ public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 
+private slots:
+    void onStatsReady(HardwareMonitor::SystemStats stats);
+
 private:
     HardwareMonitor monitor;
     bool ultTried;

@@ -33,7 +33,7 @@ MainWindow::MainWindow(QWidget *parent)
         ui->adminStatus->setText("Admin: 🔴");
     }
 
-    updateModeUI();
+
 
 
     if(!isAdmin){
@@ -65,7 +65,7 @@ MainWindow::MainWindow(QWidget *parent)
 
     ultSupport = monitor.isUltimateSupported();
     ultTried = false;
-
+    updateModeUI();
     if(!ultSupport){
         ui->ultPerformanceButton->setEnabled(false);
         ui->tryEnableUltimateButton->setVisible(true);
@@ -85,18 +85,21 @@ MainWindow::MainWindow(QWidget *parent)
         ultTried = true;
         if(isAdmin){
             monitor.tryEnablingUltimateMode();
-            bool check = monitor.isUltimateSupported();
-            if(check){
-                QMessageBox::information(this,"Success","Ultimate Peformance Mode Enabled!");
-                ui->tryEnableUltimateButton->setVisible(false);
-                ui->ultPerformanceButton->setEnabled(true);
-                ui->ultPerformanceActStatus->setText("");
-            }else{
-                ui->tryEnableUltimateButton->setVisible(false);
-                ui->ultPerformanceButton->setToolTip("Even after trying, your system still doesn't support ultimate performance!");
-                ui->ultPerformanceButton->setEnabled(false);
-                ui->ultPerformanceActStatus->setText("(unsupported, checked)");
-            }
+            QTimer::singleShot(1000, this, [this](){   // wait 1 second before checking
+                bool check = monitor.isUltimateSupported();
+                ultSupport = check;
+                if(check){
+                    QMessageBox::information(this,"Success","Ultimate Peformance Mode Enabled!");
+                    ui->tryEnableUltimateButton->setVisible(false);
+                    ui->ultPerformanceButton->setEnabled(true);
+                    ui->ultPerformanceActStatus->setText("");
+                }else{
+                    ui->tryEnableUltimateButton->setVisible(false);
+                    ui->ultPerformanceButton->setToolTip("Even after trying, your system still doesn't support ultimate performance!");
+                    ui->ultPerformanceButton->setEnabled(false);
+                    ui->ultPerformanceActStatus->setText("(unsupported, checked)");
+                }
+            });
         }
     });
 
@@ -153,14 +156,18 @@ MainWindow::MainWindow(QWidget *parent)
     QTimer *syncSchemeTimer = new QTimer(this);
     connect (statsTimer, &QTimer:: timeout, this, &MainWindow::updateStats);
     connect(syncSchemeTimer, &QTimer::timeout, this, &MainWindow::autoSyncPowerScheme);
+    connect(&monitor, &HardwareMonitor::statsReady, this, &MainWindow::onStatsReady);
     statsTimer->start(3000);
     syncSchemeTimer->start(3000);
 }
 
 void MainWindow::updateStats()
 {
-    auto stats = monitor.getSystemStats();
+    monitor.fetchStatsAsync();
+}
 
+void MainWindow::onStatsReady(HardwareMonitor::SystemStats stats)
+{
     // ================= CPU =================
     ui->cpuNameLabel->setText(stats.cpu.name);
 
@@ -170,7 +177,7 @@ void MainWindow::updateStats()
     ui->cpuUsageLabel->setText(
         QString::number(stats.cpu.usage, 'f', 1) + " %");
 
-    if(stats.cpu.speed > 100) // avoid tiny/invalid values
+    if(stats.cpu.speed > 100)
         ui->cpuSpeedLabel->setText(QString::number(stats.cpu.speed, 'f', 0) + " MHz");
     else
         ui->cpuSpeedLabel->setText("--");

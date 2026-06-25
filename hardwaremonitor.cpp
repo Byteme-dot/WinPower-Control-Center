@@ -5,11 +5,26 @@
 #include <QJsonArray>
 #include <QCoreApplication>
 #include <windows.h>
+#include <QtConcurrent/QtConcurrent>
 
-HardwareMonitor::HardwareMonitor(QObject *parent)
-    : QObject(parent)
-{
+HardwareMonitor::HardwareMonitor(QObject *parent): QObject(parent){
     currentMode = detectPowerMode();
+
+    watcher = new QFutureWatcher<SystemStats>(this);
+    connect(watcher, &QFutureWatcher<SystemStats>::finished, this, [this](){
+        SystemStats stats = watcher -> result();
+        emit statsReady(stats);
+    });
+}
+
+void HardwareMonitor::fetchStatsAsync(){
+    if(watcher -> isRunning()) return;
+
+    QFuture<SystemStats> future = QtConcurrent::run([this](){
+        return getSystemStats();
+    });
+
+    watcher -> setFuture(future);
 }
 
 HardwareMonitor::SystemStats HardwareMonitor::getSystemStats()

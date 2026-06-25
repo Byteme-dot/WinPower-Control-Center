@@ -4,6 +4,7 @@
 #include <QObject>
 #include <QString>
 #include <QList>
+#include <QFutureWatcher>
 
 class HardwareMonitor : public QObject
 {
@@ -31,19 +32,32 @@ public:
         CpuStats cpu;
         QList<GpuStats> gpus;
     };
-    QString currentMode;
+
+
     SystemStats getSystemStats();
-    void setMode(QString);
-    bool isUltimateSupported();
+
     QString getMode();
+    QString detectPowerMode();
+
+    bool isUltimateSupported();
+
     int getCpuTemp();
     int getCpuFan();
     int getGpuTemp();
     int getGpuFan();
-    void applyPowerMode(QString);
-    QString detectPowerMode();
-    void tryEnablingUltimateMode();
 
+    void fetchStatsAsync();
+    void tryEnablingUltimateMode();
+    void applyPowerMode(QString);
+    void setMode(QString);
+
+    QString currentMode;
+
+signals:
+    void statsReady(HardwareMonitor::SystemStats);
+
+private:
+    QFutureWatcher<SystemStats> *watcher;
 
 };
 
