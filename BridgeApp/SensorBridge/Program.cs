@@ -1,7 +1,23 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.Management;
 using System.Text.Json;
+using System.Threading;
 using LibreHardwareMonitor.Hardware;
+
+public class UpdateVisitor : IVisitor
+{
+    public void VisitComputer(IComputer computer) { computer.Traverse(this); }
+    public void VisitHardware(IHardware hardware)
+    {
+        hardware.Update();
+        foreach (IHardware subHardware in hardware.SubHardware)
+            subHardware.Accept(this);
+    }
+    public void VisitSensor(ISensor sensor) { }
+    public void VisitParameter(IParameter parameter) { }
+}
 
 class Program
 {
@@ -14,6 +30,7 @@ class Program
         };
 
         computer.Open();
+        computer.Accept(new UpdateVisitor());
 
         string cpuName = "";
         float cpuTemp = 0;
@@ -24,69 +41,65 @@ class Program
 
         foreach (var hardware in computer.Hardware)
         {
-            UpdateHardware(hardware);
-
             // ================= CPU =================
             if (hardware.HardwareType == HardwareType.Cpu)
             {
                 cpuName = hardware.Name;
 
-                float totalTemp = 0;
-                int tempCount = 0;
-
-                // 🔥 CPU TEMP (filtered average)
-                foreach (var sensor in hardware.Sensors)
-                {
-                    if (sensor.Value.HasValue && sensor.Name.Contains("Core #"))
-                    {
-                        float val = sensor.Value.Value;
-
-                        // filter unrealistic spikes
-                        if (val > 30 && val < 85)
-                        {
-                            totalTemp += val;
-                            tempCount++;
-                        }
-                    }
-                }
-
-                if (tempCount > 0)
-                {
-                    cpuTemp = totalTemp / tempCount;
-                }
-
-                // 🔥 CPU USAGE
+                // CPU USAGE
                 foreach (var sensor in hardware.Sensors)
                 {
                     if (sensor.SensorType == SensorType.Load &&
-                        sensor.Name.Contains("Total"))
+                        sensor.Name == "CPU Total" &&
+                        sensor.Value.HasValue)
                     {
-                        cpuUsage = sensor.Value ?? 0;
+                        cpuUsage = sensor.Value.Value;
                         break;
                     }
                 }
 
-                // 🔥 CPU SPEED (FIXED - average of all cores)
-                // 🔥 CPU SPEED (FINAL FIX)
-                float bestClock = 0;
-            
-                foreach (var sensor in hardware.Sensors)
+                // CPU TEMP via Thermal Zone
+                try
                 {
-                    if (sensor.SensorType == SensorType.Clock && sensor.Value.HasValue)
+                    var searcher = new ManagementObjectSearcher(
+                        @"root\CIMV2",
+                        "SELECT * FROM Win32_PerfRawData_Counters_ThermalZoneInformation"
+                    );
+                    float highestTemp = 0;
+                    foreach (var obj in searcher.Get())
                     {
-                        float val = sensor.Value.Value;
+                        // try both cast types since WMI can return different numeric types
+                        double tempK = 0;
+                        try { tempK = Convert.ToDouble(obj["Temperature"]); }
+                        catch { continue; }
 
-                        // filter realistic CPU clocks
-                        if (val > 500 && val < 6000)
-                        {
-                            if (val > bestClock)
-                                bestClock = val;
-                        }
+                        float tempC = (float)(tempK - 273.15);
+                        if (tempC > 30 && tempC < 110 && tempC > highestTemp)
+                            highestTemp = tempC;
+                    }
+                    if (highestTemp > 0)
+                        cpuTemp = highestTemp;
+                }
+                catch { }
+
+                // CPU SPEED via Performance Counter
+                try
+                {
+                    using (var counter = new PerformanceCounter(
+                        "Processor Information",
+                        "% Processor Performance",
+                        "_Total"
+                    ))
+                    {
+                        counter.NextValue();
+                        Thread.Sleep(500);
+                        float perfPercent = counter.NextValue();
+                        cpuSpeed = (perfPercent / 100f) * 3800f;
                     }
                 }
-
-                cpuSpeed = bestClock;
+                catch { }
             }
+
             // ================= GPU =================
             if (hardware.HardwareType == HardwareType.GpuAmd ||
                 hardware.HardwareType == HardwareType.GpuNvidia ||
@@ -96,53 +109,80 @@ class Program
                 float gpuUsage = 0;
                 float gpuSpeed = 0;
 
-                // 🔥 GPU TEMP (prefer core)
-                foreach (var sensor in hardware.Sensors)
+                if (hardware.HardwareType == HardwareType.GpuAmd)
                 {
-                    if (sensor.SensorType == SensorType.Temperature &&
-                        sensor.Value.HasValue &&
-                        sensor.Name.Contains("GPU Core"))
-                    {
-                        gpuTemp = sensor.Value.Value;
-                        break;
-                    }
-                }
-
-                // fallback (AMD etc.)
-                if (gpuTemp == 0)
-                {
+                    // iGPU temp
                     foreach (var sensor in hardware.Sensors)
                     {
                         if (sensor.SensorType == SensorType.Temperature &&
                             sensor.Value.HasValue &&
-                            (sensor.Name.Contains("Core") || sensor.Name.Contains("SoC")))
+                            sensor.Name.Contains("VR SoC"))
                         {
                             gpuTemp = sensor.Value.Value;
                             break;
                         }
                     }
-                }
 
-                // 🔥 GPU USAGE
-                foreach (var sensor in hardware.Sensors)
-                {
-                    if (sensor.SensorType == SensorType.Load &&
-                        sensor.Name.Contains("Core"))
+                    // iGPU usage
+                    foreach (var sensor in hardware.Sensors)
                     {
-                        gpuUsage = sensor.Value ?? 0;
-                        break;
+                        if (sensor.SensorType == SensorType.Load &&
+                            sensor.Name == "D3D 3D" &&
+                            sensor.Value.HasValue)
+                        {
+                            gpuUsage = sensor.Value.Value;
+                            break;
+                        }
+                    }
+
+                    // iGPU speed
+                    foreach (var sensor in hardware.Sensors)
+                    {
+                        if (sensor.SensorType == SensorType.Clock &&
+                            sensor.Name == "GPU Core" &&
+                            sensor.Value.HasValue)
+                        {
+                            gpuSpeed = sensor.Value.Value;
+                            break;
+                        }
                     }
                 }
-
-                // 🔥 GPU SPEED
-                foreach (var sensor in hardware.Sensors)
+                else if (hardware.HardwareType == HardwareType.GpuNvidia)
                 {
-                    if (sensor.SensorType == SensorType.Clock &&
-                        sensor.Value.HasValue &&
-                        sensor.Name.Contains("Core"))
+                    // dGPU temp
+                    foreach (var sensor in hardware.Sensors)
                     {
-                        gpuSpeed = sensor.Value.Value;
-                        break;
+                        if (sensor.SensorType == SensorType.Temperature &&
+                            sensor.Name == "GPU Core" &&
+                            sensor.Value.HasValue)
+                        {
+                            gpuTemp = sensor.Value.Value;
+                            break;
+                        }
+                    }
+
+                    // dGPU usage
+                    foreach (var sensor in hardware.Sensors)
+                    {
+                        if (sensor.SensorType == SensorType.Load &&
+                            sensor.Name == "GPU Core" &&
+                            sensor.Value.HasValue)
+                        {
+                            gpuUsage = sensor.Value.Value;
+                            break;
+                        }
+                    }
+
+                    // dGPU speed
+                    foreach (var sensor in hardware.Sensors)
+                    {
+                        if (sensor.SensorType == SensorType.Clock &&
+                            sensor.Name == "GPU Core" &&
+                            sensor.Value.HasValue)
+                        {
+                            gpuSpeed = sensor.Value.Value;
+                            break;
+                        }
                     }
                 }
 
@@ -170,15 +210,7 @@ class Program
 
         Console.WriteLine(JsonSerializer.Serialize(result));
         Console.Out.Flush();
-    }
 
-    static void UpdateHardware(IHardware hardware)
-    {
-        hardware.Update();
-
-        foreach (var sub in hardware.SubHardware)
-        {
-            UpdateHardware(sub);
-        }
+        computer.Close();
     }
 }

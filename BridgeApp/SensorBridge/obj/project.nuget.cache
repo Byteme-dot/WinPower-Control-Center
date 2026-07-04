@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "wVsyp1S7qM0=",
+  "dgSpecHash": "QQvLVo7MJXw=",
   "success": true,
-  "projectFilePath": "C:\\Users\\abhi_devnull\\Documents\\GitHub\\WinPower-Control-Center\\BridgeApp\\SensorBridge\\SensorBridge.csproj",
+  "projectFilePath": "C:\\Users\\abhi_devnull\\Documents\\GitHUB\\WinPower-Control-Center\\BridgeApp\\SensorBridge\\SensorBridge.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\abhi_devnull\\.nuget\\packages\\microsoft.bcl.asyncinterfaces\\10.0.5\\microsoft.bcl.asyncinterfaces.10.0.5.nupkg.sha512",
     "C:\\Users\\abhi_devnull\\.nuget\\packages\\system.buffers\\4.6.1\\system.buffers.4.6.1.nupkg.sha512",

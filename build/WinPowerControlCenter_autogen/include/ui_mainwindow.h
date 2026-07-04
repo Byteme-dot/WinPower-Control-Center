@@ -12,7 +12,6 @@
 #include <QtCore/QVariant>
 #include <QtGui/QAction>
 #include <QtWidgets/QApplication>
-#include <QtWidgets/QCheckBox>
 #include <QtWidgets/QFrame>
 #include <QtWidgets/QGridLayout>
 #include <QtWidgets/QGroupBox>
@@ -97,14 +96,9 @@ public:
     QLabel *gpu2FanLabel;
     QFrame *line_3;
     QGridLayout *gridLayout;
-    QSpacerItem *horizontalSpacer;
-    QGridLayout *gridLayout_4;
-    QPushButton *powerSchemeInfo;
-    QCheckBox *autoSyncWithWindows;
-    QCheckBox *syncPowerSchemeCheckBox;
-    QPushButton *autoSyncInfo;
     QLabel *powerOverlay;
     QLabel *powerScheme;
+    QSpacerItem *horizontalSpacer_6;
     QSpacerItem *verticalSpacer_2;
     QFrame *line_2;
     QVBoxLayout *verticalLayout_23;
@@ -560,67 +554,34 @@ public:
 
         gridLayout = new QGridLayout();
         gridLayout->setObjectName("gridLayout");
-        horizontalSpacer = new QSpacerItem(40, 20, QSizePolicy::Policy::Expanding, QSizePolicy::Policy::Minimum);
-
-        gridLayout->addItem(horizontalSpacer, 2, 1, 1, 1);
-
-        gridLayout_4 = new QGridLayout();
-        gridLayout_4->setObjectName("gridLayout_4");
-        powerSchemeInfo = new QPushButton(groupBox_2);
-        powerSchemeInfo->setObjectName("powerSchemeInfo");
-        sizePolicy2.setHeightForWidth(powerSchemeInfo->sizePolicy().hasHeightForWidth());
-        powerSchemeInfo->setSizePolicy(sizePolicy2);
-        powerSchemeInfo->setMinimumSize(QSize(20, 20));
-        powerSchemeInfo->setMaximumSize(QSize(20, 20));
-        QFont font4;
-        font4.setBold(true);
-        font4.setStrikeOut(false);
-        font4.setKerning(true);
-        powerSchemeInfo->setFont(font4);
-        powerSchemeInfo->setAcceptDrops(false);
-        powerSchemeInfo->setAutoFillBackground(false);
-
-        gridLayout_4->addWidget(powerSchemeInfo, 0, 0, 1, 1);
-
-        autoSyncWithWindows = new QCheckBox(groupBox_2);
-        autoSyncWithWindows->setObjectName("autoSyncWithWindows");
-        sizePolicy2.setHeightForWidth(autoSyncWithWindows->sizePolicy().hasHeightForWidth());
-        autoSyncWithWindows->setSizePolicy(sizePolicy2);
-
-        gridLayout_4->addWidget(autoSyncWithWindows, 1, 1, 1, 1);
-
-        syncPowerSchemeCheckBox = new QCheckBox(groupBox_2);
-        syncPowerSchemeCheckBox->setObjectName("syncPowerSchemeCheckBox");
-        sizePolicy2.setHeightForWidth(syncPowerSchemeCheckBox->sizePolicy().hasHeightForWidth());
-        syncPowerSchemeCheckBox->setSizePolicy(sizePolicy2);
-        syncPowerSchemeCheckBox->setMinimumSize(QSize(200, 0));
-
-        gridLayout_4->addWidget(syncPowerSchemeCheckBox, 0, 1, 1, 1);
-
-        autoSyncInfo = new QPushButton(groupBox_2);
-        autoSyncInfo->setObjectName("autoSyncInfo");
-        sizePolicy2.setHeightForWidth(autoSyncInfo->sizePolicy().hasHeightForWidth());
-        autoSyncInfo->setSizePolicy(sizePolicy2);
-        autoSyncInfo->setMinimumSize(QSize(20, 20));
-        autoSyncInfo->setMaximumSize(QSize(20, 20));
-        autoSyncInfo->setFont(font4);
-        autoSyncInfo->setAutoFillBackground(false);
-
-        gridLayout_4->addWidget(autoSyncInfo, 1, 0, 1, 1);
-
-        gridLayout_4->setRowStretch(0, 1);
-
-        gridLayout->addLayout(gridLayout_4, 2, 0, 1, 1);
-
         powerOverlay = new QLabel(groupBox_2);
         powerOverlay->setObjectName("powerOverlay");
+        sizePolicy.setHeightForWidth(powerOverlay->sizePolicy().hasHeightForWidth());
+        powerOverlay->setSizePolicy(sizePolicy);
+        powerOverlay->setMinimumSize(QSize(350, 30));
+        QFont font4;
+        font4.setPointSize(12);
+        font4.setWeight(QFont::DemiBold);
+        font4.setKerning(false);
+        powerOverlay->setFont(font4);
 
         gridLayout->addWidget(powerOverlay, 1, 0, 1, 1);
 
         powerScheme = new QLabel(groupBox_2);
         powerScheme->setObjectName("powerScheme");
+        powerScheme->setMinimumSize(QSize(350, 30));
+        QFont font5;
+        font5.setPointSize(12);
+        font5.setWeight(QFont::DemiBold);
+        font5.setItalic(false);
+        font5.setKerning(false);
+        powerScheme->setFont(font5);
 
         gridLayout->addWidget(powerScheme, 0, 0, 1, 1);
+
+        horizontalSpacer_6 = new QSpacerItem(40, 10, QSizePolicy::Policy::Expanding, QSizePolicy::Policy::Minimum);
+
+        gridLayout->addItem(horizontalSpacer_6, 1, 1, 1, 1);
 
 
         verticalLayout_30->addLayout(gridLayout);
@@ -640,11 +601,11 @@ public:
         verticalLayout_23->setObjectName("verticalLayout_23");
         label_2 = new QLabel(groupBox_2);
         label_2->setObjectName("label_2");
-        QFont font5;
-        font5.setPointSize(15);
-        font5.setBold(true);
-        font5.setKerning(false);
-        label_2->setFont(font5);
+        QFont font6;
+        font6.setPointSize(15);
+        font6.setBold(true);
+        font6.setKerning(false);
+        label_2->setFont(font6);
         label_2->setAlignment(Qt::AlignmentFlag::AlignCenter);
 
         verticalLayout_23->addWidget(label_2);
@@ -747,7 +708,7 @@ public:
 
         label_3 = new QLabel(groupBox_2);
         label_3->setObjectName("label_3");
-        label_3->setFont(font5);
+        label_3->setFont(font6);
         label_3->setAlignment(Qt::AlignmentFlag::AlignCenter);
 
         verticalLayout_30->addWidget(label_3);
@@ -840,12 +801,12 @@ public:
         tryEnableUltimateButton->setSizePolicy(sizePolicy);
         tryEnableUltimateButton->setMinimumSize(QSize(70, 20));
         tryEnableUltimateButton->setMaximumSize(QSize(80, 30));
-        QFont font6;
-        font6.setBold(false);
-        font6.setItalic(true);
-        font6.setUnderline(false);
-        font6.setKerning(false);
-        tryEnableUltimateButton->setFont(font6);
+        QFont font7;
+        font7.setBold(false);
+        font7.setItalic(true);
+        font7.setUnderline(false);
+        font7.setKerning(false);
+        tryEnableUltimateButton->setFont(font7);
         tryEnableUltimateButton->setContextMenuPolicy(Qt::ContextMenuPolicy::DefaultContextMenu);
         tryEnableUltimateButton->setLayoutDirection(Qt::LayoutDirection::LeftToRight);
         tryEnableUltimateButton->setAutoFillBackground(false);
@@ -944,10 +905,6 @@ public:
         gpu2TempLabel->setText(QCoreApplication::translate("MainWindow", "- -", nullptr));
         label_30->setText(QCoreApplication::translate("MainWindow", "Fan Speed", nullptr));
         gpu2FanLabel->setText(QCoreApplication::translate("MainWindow", "- -", nullptr));
-        powerSchemeInfo->setText(QCoreApplication::translate("MainWindow", "i", nullptr));
-        autoSyncWithWindows->setText(QCoreApplication::translate("MainWindow", "Auto Sync", nullptr));
-        syncPowerSchemeCheckBox->setText(QCoreApplication::translate("MainWindow", "Sync Power Scheme", nullptr));
-        autoSyncInfo->setText(QCoreApplication::translate("MainWindow", "i", nullptr));
         powerOverlay->setText(QCoreApplication::translate("MainWindow", "Power Overlay:", nullptr));
         powerScheme->setText(QCoreApplication::translate("MainWindow", "Power Scheme: ", nullptr));
         label_2->setText(QCoreApplication::translate("MainWindow", "Power Overlay Settings", nullptr));

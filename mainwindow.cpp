@@ -7,7 +7,7 @@
 #include "manageadmin.h"
 #include <QJsonDocument>
 #include <QJsonObject>
-#define APP_VERSION "v0.4"
+#define APP_VERSION "v0.5"
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -33,17 +33,6 @@ MainWindow::MainWindow(QWidget *parent)
         ui->adminStatus->setText("Admin: 🟢");
     }else{
         ui->adminStatus->setText("Admin: 🔴");
-    }
-
-    if(!isAdmin){
-        ui->syncPowerSchemeCheckBox->setEnabled(false);
-        ui->syncPowerSchemeCheckBox->setToolTip("Run as admin to enable this feature!");
-        ui->autoSyncWithWindows->setEnabled(false);
-        ui->autoSyncWithWindows->setToolTip("Enable Sync Power Scheme First !");
-    }else{
-        ui->syncPowerSchemeCheckBox->setEnabled(true);
-        ui->autoSyncWithWindows->setEnabled(false);
-        ui->autoSyncWithWindows->setToolTip("Enable Sync Power Scheme First !");
     }
 
 // ================================================================================================================
@@ -103,6 +92,7 @@ MainWindow::MainWindow(QWidget *parent)
         }
     });
 
+    // POWER SCHEME SYNC WITH UI
     connect(ui->ecoButton, &QPushButton::clicked, this, [this]() {
         changeMode("Eco");
     });
@@ -118,65 +108,27 @@ MainWindow::MainWindow(QWidget *parent)
     connect(ui->ultPerformanceButton, &QPushButton::clicked, this, [this]() {
         changeMode("UltimatePerformance");
     });
+    //=============================
 
+    // POWER OVERLAY SYNC WITH UI
     connect(ui->BestEffOverlayButton, &QPushButton::clicked, this, [this]() {
-        monitor.applyPowerOverlay("Eco");
-        ui->powerOverlay->setText("Power Overlay: Best Efficiency");
-        monitor.setOverlayMode("Eco");
-        updateOverlayUI();
+        changeOverlayMode("Eco");
     });
 
     connect(ui->BalancedOverlayButton, &QPushButton::clicked, this, [this]() {
-        monitor.applyPowerOverlay("Balanced");
-        ui->powerOverlay->setText("Power Overlay: Balanced");
-        monitor.setOverlayMode("Balanced");
-        updateOverlayUI();
+        changeOverlayMode("Balanced");
     });
 
     connect(ui->BestPerfOverlayButton, &QPushButton::clicked, this, [this]() {
-        monitor.applyPowerOverlay("Performance");
-        ui->powerOverlay->setText("Power Overlay: Best Performance");
-        monitor.setOverlayMode("Performance");
-        updateOverlayUI();
+        changeOverlayMode("Performance");
     });
-
-    connect(ui->syncPowerSchemeCheckBox, &QCheckBox::toggled, this, [this](bool checked){
-        if(checked){
-            ui->autoSyncWithWindows->setEnabled(true);
-            ui->autoSyncWithWindows->setToolTip("");
-        }else{
-            ui->autoSyncWithWindows->setEnabled(false);
-            ui->autoSyncWithWindows->setChecked(false);
-            ui->autoSyncWithWindows->setToolTip("Enable Sync Power Scheme First !");
-        }
-    });
-
-    connect(ui->autoSyncInfo, &QPushButton::clicked, this, [this](){
-        QMessageBox autoSyncMsgBox;
-        autoSyncMsgBox.setWindowTitle("Auto Sync Information");
-        autoSyncMsgBox.setText("When this button is checked (enabled) this will sync the Windows Power"
-                               " Scheme with the app every 3 seconds. If you make changes to the power schemes "
-                               "using the control panel, it will reflect in the app too. Keep off to avoid "
-                               "consuming more resources and if you are not going to change power schemes with any other way.");
-        autoSyncMsgBox.addButton("Okay", QMessageBox::AcceptRole);
-        autoSyncMsgBox.exec();
-    });
-
-    connect(ui->powerSchemeInfo, &QPushButton::clicked, this, [this](){
-        QMessageBox powerSchemeMsgBox;
-        powerSchemeMsgBox.setWindowTitle("Sync Power Scheme Information");
-        powerSchemeMsgBox.setText("When this button is checked (enabled) it will sync the Window's Power Scheme with"
-                                  " the app's power modes. To enable this button, you need to run this app As Admin!");
-        powerSchemeMsgBox.addButton("Okay", QMessageBox::AcceptRole);
-        powerSchemeMsgBox.exec();
-    });
+    // =============================
 
 // ================================================================================================================
 
     QTimer *statsTimer = new QTimer(this);
     QTimer *syncSchemeTimer = new QTimer(this);
     connect (statsTimer, &QTimer:: timeout, this, &MainWindow::updateStats);
-    connect(syncSchemeTimer, &QTimer::timeout, this, &MainWindow::autoSyncPowerScheme);
     connect(&monitor, &HardwareMonitor::statsReady, this, &MainWindow::onStatsReady);
     statsTimer->start(3000);
     syncSchemeTimer->start(3000);
@@ -351,6 +303,19 @@ void MainWindow::updateModeUI(){
     }
 }
 
+void MainWindow::changeOverlayMode(QString mode){
+    monitor.applyPowerOverlay(mode);
+    monitor.setOverlayMode(mode);
+    updateOverlayUI();
+    if(mode == "Eco"){
+        ui->powerOverlay->setText("Power Overlay: Best Efficiency");
+    }else if(mode == "Balanced"){
+        ui->powerOverlay->setText("Power Overlay: Balanced");
+    }else if(mode == "Performance"){
+        ui->powerOverlay->setText("Power Overlay: Best Performance");
+    }
+}
+
 void MainWindow::changeMode(QString mode){
     if(mode == "UltimatePerformance" && !ultSupport){
         QMessageBox::information(this, "Not Supported", "...");
@@ -359,27 +324,13 @@ void MainWindow::changeMode(QString mode){
         ui->powerScheme->setText("Power Scheme: " + mode);
         updateModeUI();
         updateOverlayUI();
-        if(ui->syncPowerSchemeCheckBox->isChecked() && isAdmin){
+        if(isAdmin){
             monitor.applyPowerMode(mode);
-            ui->powerOverlay->setText("Mode: " + mode + " (synced)");
+            ui->powerScheme->setText("Power Scheme: " + mode );
         }
     }
 }
 
-void MainWindow::autoSyncPowerScheme(){
-    if(!(ui->syncPowerSchemeCheckBox->isChecked() && isAdmin)){
-        return;
-    }
-
-    if(ui->autoSyncWithWindows->isChecked()){
-        QString systemScheme = monitor.detectPowerMode();
-        if(systemScheme != monitor.getMode()){
-            monitor.setMode(systemScheme);
-            ui->powerOverlay->setText("Mode: " + systemScheme);
-            updateModeUI();
-        }
-    }
-}
 
 
 MainWindow::~MainWindow()

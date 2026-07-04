@@ -25,8 +25,8 @@ private:
     HardwareMonitor monitor;
     bool ultTried;
     bool ultSupport;
-    void autoSyncPowerScheme();
     void updateStats();
+    void changeOverlayMode(QString);
     void changeMode(QString);
     Ui::MainWindow *ui;
     bool isAdmin;
