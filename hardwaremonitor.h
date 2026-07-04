@@ -38,6 +38,7 @@ public:
 
     QString getMode();
     QString detectPowerMode();
+    QString detectOverlayMode();
 
     bool isUltimateSupported();
 
@@ -51,8 +52,12 @@ public:
     void applyPowerMode(QString);
     void setMode(QString);
 
-    QString currentMode;
+    void setOverlayMode(QString newMode);
+    QString getOverlayMode();
+    void applyPowerOverlay(QString powerMode);
 
+    QString currentMode;
+    QString currentOverlayMode;
 signals:
     void statsReady(HardwareMonitor::SystemStats);
 

@@ -24,7 +24,10 @@ target_link_libraries(WinPowerControlCenter
         Qt6::Core
         Qt6::Widgets
         Qt6::Concurrent
+        powrprof
 )
+
+target_link_libraries(WinPowerControlCenter PRIVATE powrprof)
 
 include(GNUInstallDirs)
 

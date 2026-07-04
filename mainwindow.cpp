@@ -19,7 +19,9 @@ MainWindow::MainWindow(QWidget *parent)
 // ------------------------ EXTRACTING AND SYNCING CURRENT WINDOW'S POWER SCHEME ---------------------------------
 
     QString systemPowerScheme = monitor.getMode();
-    ui->modeLabel->setText("Mode: " + systemPowerScheme);
+    QString systemOverlayMod = monitor.getOverlayMode();
+    ui->powerOverlay->setText("Power Overlay: " + systemPowerScheme);
+    ui->powerScheme->setText("Power Scheme: " + systemPowerScheme);
     ui->gpu2GroupBox->setVisible(false);
 // ===============================================================================================================
 
@@ -32,9 +34,6 @@ MainWindow::MainWindow(QWidget *parent)
     }else{
         ui->adminStatus->setText("Admin: 🔴");
     }
-
-
-
 
     if(!isAdmin){
         ui->syncPowerSchemeCheckBox->setEnabled(false);
@@ -66,6 +65,7 @@ MainWindow::MainWindow(QWidget *parent)
     ultSupport = monitor.isUltimateSupported();
     ultTried = false;
     updateModeUI();
+    updateOverlayUI();
     if(!ultSupport){
         ui->ultPerformanceButton->setEnabled(false);
         ui->tryEnableUltimateButton->setVisible(true);
@@ -119,6 +119,27 @@ MainWindow::MainWindow(QWidget *parent)
         changeMode("UltimatePerformance");
     });
 
+    connect(ui->BestEffOverlayButton, &QPushButton::clicked, this, [this]() {
+        monitor.applyPowerOverlay("Eco");
+        ui->powerOverlay->setText("Power Overlay: Best Efficiency");
+        monitor.setOverlayMode("Eco");
+        updateOverlayUI();
+    });
+
+    connect(ui->BalancedOverlayButton, &QPushButton::clicked, this, [this]() {
+        monitor.applyPowerOverlay("Balanced");
+        ui->powerOverlay->setText("Power Overlay: Balanced");
+        monitor.setOverlayMode("Balanced");
+        updateOverlayUI();
+    });
+
+    connect(ui->BestPerfOverlayButton, &QPushButton::clicked, this, [this]() {
+        monitor.applyPowerOverlay("Performance");
+        ui->powerOverlay->setText("Power Overlay: Best Performance");
+        monitor.setOverlayMode("Performance");
+        updateOverlayUI();
+    });
+
     connect(ui->syncPowerSchemeCheckBox, &QCheckBox::toggled, this, [this](bool checked){
         if(checked){
             ui->autoSyncWithWindows->setEnabled(true);
@@ -159,6 +180,48 @@ MainWindow::MainWindow(QWidget *parent)
     connect(&monitor, &HardwareMonitor::statsReady, this, &MainWindow::onStatsReady);
     statsTimer->start(3000);
     syncSchemeTimer->start(3000);
+}
+
+void MainWindow::updateOverlayUI(){
+    QString ecoOverlayDefault = ":hover {border: 2px solid #096C17; border-radius: 8px;}";
+    QString balancedOverlayDefault = ":hover {border: 2px solid #0A5D6B; border-radius: 8px;}";
+    QString performanceOverlayDefault = ":hover {border: 2px solid #6E1708; border-radius: 8px;}";
+
+    QString ecoOverlaySelected = "QPushButton {background-color: #11BF28; font-weight: bold}"
+                          ":hover {border: 3px solid #096C17; border-radius: 8px;}";
+
+    QString balancedOverlaySelected = "QPushButton {background-color: #12A9C4; font-weight: bold}"
+                               ":hover {border: 3px solid #0A5D6B; border-radius: 8px;}";
+
+    QString performanceOverlaySelected = "QPushButton {background-color: #D42B0F; font-weight: bold}"
+                                  ":hover {border: 3px solid #6E1708; border-radius: 8px;}";
+
+    ui->BestEffOverlayButton->setStyleSheet(ecoOverlayDefault);
+    ui->BalancedOverlayButton->setStyleSheet(balancedOverlayDefault);
+    ui->BestPerfOverlayButton->setStyleSheet(performanceOverlayDefault);
+
+
+    ui->BestEffOverlayActStatus->setText("");
+    ui->BalancedOverlayActStatus->setText("");
+    ui->BestPerfOverlayActStatus->setText("");
+
+    QString currentOverlay = monitor.getOverlayMode();
+    if(currentOverlay == "Eco"){
+        ui->BestEffOverlayActStatus->setText("(active)");
+        ui->BalancedOverlayActStatus->setText("");
+        ui->BestPerfOverlayActStatus->setText("");
+        ui->BestEffOverlayButton->setStyleSheet(ecoOverlaySelected);
+    }else if(currentOverlay == "Balanced"){
+        ui->BestEffOverlayActStatus->setText("");
+        ui->BalancedOverlayActStatus->setText("(active)");
+        ui->BestPerfOverlayActStatus->setText("");
+        ui->BalancedOverlayButton->setStyleSheet(balancedOverlaySelected);
+    }else if(currentOverlay == "Performance"){
+        ui->BestEffOverlayActStatus->setText("");
+        ui->BalancedOverlayActStatus->setText("");
+        ui->BestPerfOverlayActStatus->setText("(active)");
+        ui->BestPerfOverlayButton->setStyleSheet(performanceOverlaySelected);
+    }
 }
 
 void MainWindow::updateStats()
@@ -221,7 +284,7 @@ void MainWindow::onStatsReady(HardwareMonitor::SystemStats stats)
 }
 
 void MainWindow::updateModeUI(){
-
+// ++++++++++++++ UI FOR BUTTONS - SCHEME **********************
     QString ecoDefault = ":hover {border: 2px solid #096C17; border-radius: 8px;}";
     QString balancedDefault = ":hover {border: 2px solid #0A5D6B; border-radius: 8px;}";
     QString performanceDefault = ":hover {border: 2px solid #6E1708; border-radius: 8px;}";
@@ -239,11 +302,13 @@ void MainWindow::updateModeUI(){
     QString ultPerformanceSelected = "QPushButton {background-color: #6918DB; font-weight: bold}"
                                   ":hover {border: 3px solid #471093; border-radius: 8px;}";
 
-
     ui->ecoButton->setStyleSheet(ecoDefault);
     ui->balancedButton->setStyleSheet(balancedDefault);
     ui->performanceButton->setStyleSheet(performanceDefault);
     ui->ultPerformanceButton->setStyleSheet(ultPerformanceDefault);
+
+
+// ++++++++++++++ UI FOR BUTTONS - SCHEME **********************
 
     if(monitor.getMode() == "Eco"){
         ui->ecoActStatus->setText("(active)");
@@ -287,16 +352,16 @@ void MainWindow::updateModeUI(){
 }
 
 void MainWindow::changeMode(QString mode){
-
     if(mode == "UltimatePerformance" && !ultSupport){
-        QMessageBox::information(this, "Not Supported", "Ultimate Performance Mode is not supported by your device!");
+        QMessageBox::information(this, "Not Supported", "...");
     }else{
         monitor.setMode(mode);
-        ui->modeLabel->setText("Mode: " + mode);
+        ui->powerScheme->setText("Power Scheme: " + mode);
         updateModeUI();
+        updateOverlayUI();
         if(ui->syncPowerSchemeCheckBox->isChecked() && isAdmin){
             monitor.applyPowerMode(mode);
-            ui->modeLabel->setText("Mode: " + mode + " (synced)");
+            ui->powerOverlay->setText("Mode: " + mode + " (synced)");
         }
     }
 }
@@ -310,7 +375,7 @@ void MainWindow::autoSyncPowerScheme(){
         QString systemScheme = monitor.detectPowerMode();
         if(systemScheme != monitor.getMode()){
             monitor.setMode(systemScheme);
-            ui->modeLabel->setText("Mode: " + systemScheme);
+            ui->powerOverlay->setText("Mode: " + systemScheme);
             updateModeUI();
         }
     }

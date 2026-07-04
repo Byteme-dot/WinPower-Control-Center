@@ -6,10 +6,15 @@
 #include <QCoreApplication>
 #include <windows.h>
 #include <QtConcurrent/QtConcurrent>
+#include <powrprof.h>
+#include <windows.h>
+extern "C" DWORD WINAPI PowerSetActiveOverlayScheme(GUID OverlaySchemeGuid);
+extern "C" DWORD WINAPI PowerSetActiveOverlayScheme(GUID OverlaySchemeGuid);
+extern "C" DWORD WINAPI PowerGetActualOverlayScheme(GUID* OverlaySchemeGuid);
 
 HardwareMonitor::HardwareMonitor(QObject *parent): QObject(parent){
     currentMode = detectPowerMode();
-
+    currentOverlayMode = detectOverlayMode();
     watcher = new QFutureWatcher<SystemStats>(this);
     connect(watcher, &QFutureWatcher<SystemStats>::finished, this, [this](){
         SystemStats stats = watcher -> result();
@@ -80,7 +85,7 @@ HardwareMonitor::SystemStats HardwareMonitor::getSystemStats()
     return stats;
 }
 
-// ================= POWER MODE =================
+// ================= POWER SCHEME =================
 
 void HardwareMonitor::setMode(QString newMode){
     currentMode = newMode;
@@ -136,4 +141,52 @@ void HardwareMonitor::tryEnablingUltimateMode(){
     process.start("powercfg", QStringList() << "-duplicatescheme"
                                             << "e9a42b02-d5df-448d-aa00-03f14749eb61");
     process.waitForFinished();
+}
+
+//Power overlay functions below:
+
+void HardwareMonitor::setOverlayMode(QString newMode){
+    currentOverlayMode = newMode;
+}
+
+QString HardwareMonitor::getOverlayMode(){
+    return currentOverlayMode;
+}
+
+void HardwareMonitor::applyPowerOverlay(QString powerMode){
+    GUID overlayGuid;
+
+    if(powerMode == "Eco")
+        // Best Power Efficiency
+        CLSIDFromString(L"{961cc777-2547-4f9d-8174-7d86181b8a7a}", &overlayGuid);
+    else if(powerMode == "Balanced")
+        // Balanced
+        CLSIDFromString(L"{00000000-0000-0000-0000-000000000000}", &overlayGuid);
+    else if(powerMode == "Performance")
+        // Best Performance
+        CLSIDFromString(L"{ded574b5-45a0-4f42-8737-46345c09c238}", &overlayGuid);
+    else if(powerMode == "UltimatePerformance")
+        // Best Performance
+        CLSIDFromString(L"{ded574b5-45a0-4f42-8737-46345c09c238}", &overlayGuid);
+    else
+        return;
+
+    PowerSetActiveOverlayScheme(overlayGuid);
+}
+
+QString HardwareMonitor::detectOverlayMode(){
+    GUID overlayGuid;
+    DWORD result = PowerGetActualOverlayScheme(&overlayGuid);
+
+    if(result != ERROR_SUCCESS)
+        return "Balanced"; // fallback
+
+    OLECHAR* guidStr;
+    StringFromCLSID(overlayGuid, &guidStr);
+    QString guidQStr = QString::fromWCharArray(guidStr).toLower().remove("{").remove("}");
+    CoTaskMemFree(guidStr);
+
+    if(guidQStr.contains("961cc777")) return "Eco";
+    if(guidQStr.contains("ded574b5")) return "Performance";
+    return "Balanced";
 }

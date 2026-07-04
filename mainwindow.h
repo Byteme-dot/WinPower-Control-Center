@@ -43,5 +43,7 @@ private:
     int gpuTempDisplay = 0;
     int cpuFanDisplay = 0;
     int gpuFanDisplay = 0;
+
+    void updateOverlayUI();
 };
 #endif // MAINWINDOW_H

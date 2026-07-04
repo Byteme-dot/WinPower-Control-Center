@@ -6558,6 +6558,18 @@
 			"value" : "C:/Users/abhi_devnull/Documents/GitHub/WinPower-Control-Center/build/.qt/bin/qt_setup_tool_path.bat"
 		},
 		{
+			"name" : "Qt6Concurrent_DIR",
+			"properties" : 
+			[
+				{
+					"name" : "HELPSTRING",
+					"value" : "The directory containing a CMake configuration file for Qt6Concurrent."
+				}
+			],
+			"type" : "PATH",
+			"value" : "C:/Qt/6.10.2/mingw_64/lib/cmake/Qt6Concurrent"
+		},
+		{
 			"name" : "Qt6CoreTools_DIR",
 			"properties" : 
 			[

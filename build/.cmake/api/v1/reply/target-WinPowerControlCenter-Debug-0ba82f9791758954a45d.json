@@ -84,7 +84,7 @@
 			{
 				"command" : 4,
 				"file" : 1,
-				"line" : 31,
+				"line" : 34,
 				"parent" : 0
 			},
 			{
@@ -516,6 +516,16 @@
 			{
 				"backtrace" : 6,
 				"fragment" : "C:\\Qt\\6.10.2\\mingw_64\\lib\\libQt6Concurrent.a",
+				"role" : "libraries"
+			},
+			{
+				"backtrace" : 6,
+				"fragment" : "-lpowrprof",
+				"role" : "libraries"
+			},
+			{
+				"backtrace" : 6,
+				"fragment" : "-lpowrprof",
 				"role" : "libraries"
 			},
 			{
