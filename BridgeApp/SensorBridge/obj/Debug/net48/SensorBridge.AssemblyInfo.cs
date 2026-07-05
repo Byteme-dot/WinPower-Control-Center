@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("SensorBridge")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+7af7011748e2e758cebfacd3bcb4102f3095ad54")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+d3b589cb50e33bc1bdfe09155b754d649407f215")]
 [assembly: System.Reflection.AssemblyProductAttribute("SensorBridge")]
 [assembly: System.Reflection.AssemblyTitleAttribute("SensorBridge")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

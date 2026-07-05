@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\abhi_devnull\\Documents\\GitHUB\\WinPower-Control-Center\\BridgeApp\\SensorBridge\\SensorBridge.csproj": {}
+    "C:\\Users\\abhi_devnull\\Documents\\GitHub\\WinPower-Control-Center\\BridgeApp\\SensorBridge\\SensorBridge.csproj": {}
   },
   "projects": {
-    "C:\\Users\\abhi_devnull\\Documents\\GitHUB\\WinPower-Control-Center\\BridgeApp\\SensorBridge\\SensorBridge.csproj": {
+    "C:\\Users\\abhi_devnull\\Documents\\GitHub\\WinPower-Control-Center\\BridgeApp\\SensorBridge\\SensorBridge.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\abhi_devnull\\Documents\\GitHUB\\WinPower-Control-Center\\BridgeApp\\SensorBridge\\SensorBridge.csproj",
+        "projectUniqueName": "C:\\Users\\abhi_devnull\\Documents\\GitHub\\WinPower-Control-Center\\BridgeApp\\SensorBridge\\SensorBridge.csproj",
         "projectName": "SensorBridge",
-        "projectPath": "C:\\Users\\abhi_devnull\\Documents\\GitHUB\\WinPower-Control-Center\\BridgeApp\\SensorBridge\\SensorBridge.csproj",
+        "projectPath": "C:\\Users\\abhi_devnull\\Documents\\GitHub\\WinPower-Control-Center\\BridgeApp\\SensorBridge\\SensorBridge.csproj",
         "packagesPath": "C:\\Users\\abhi_devnull\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\abhi_devnull\\Documents\\GitHUB\\WinPower-Control-Center\\BridgeApp\\SensorBridge\\obj\\",
+        "outputPath": "C:\\Users\\abhi_devnull\\Documents\\GitHub\\WinPower-Control-Center\\BridgeApp\\SensorBridge\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\abhi_devnull\\AppData\\Roaming\\NuGet\\NuGet.Config"

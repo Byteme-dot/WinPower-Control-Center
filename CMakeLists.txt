@@ -25,6 +25,7 @@ target_link_libraries(WinPowerControlCenter
         Qt6::Widgets
         Qt6::Concurrent
         powrprof
+        ole32
 )
 
 target_link_libraries(WinPowerControlCenter PRIVATE powrprof)

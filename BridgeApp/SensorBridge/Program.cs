@@ -46,18 +46,6 @@ class Program
             {
                 cpuName = hardware.Name;
 
-                // CPU USAGE
-                foreach (var sensor in hardware.Sensors)
-                {
-                    if (sensor.SensorType == SensorType.Load &&
-                        sensor.Name == "CPU Total" &&
-                        sensor.Value.HasValue)
-                    {
-                        cpuUsage = sensor.Value.Value;
-                        break;
-                    }
-                }
-
                 // CPU TEMP via Thermal Zone
                 try
                 {
@@ -68,7 +56,6 @@ class Program
                     float highestTemp = 0;
                     foreach (var obj in searcher.Get())
                     {
-                        // try both cast types since WMI can return different numeric types
                         double tempK = 0;
                         try { tempK = Convert.ToDouble(obj["Temperature"]); }
                         catch { continue; }
@@ -82,22 +69,62 @@ class Program
                 }
                 catch { }
 
-                // CPU SPEED via Performance Counter
+                // CPU SPEED + USAGE via Performance Counters (shared sleep)
                 try
                 {
-                    using (var counter = new PerformanceCounter(
+                    using (var speedCounter = new PerformanceCounter(
                         "Processor Information",
                         "% Processor Performance",
                         "_Total"
                     ))
+                    using (var usageCounter = new PerformanceCounter(
+                        "Processor Information",
+                        "% Processor Utility",
+                        "_Total"
+                    ))
                     {
-                        counter.NextValue();
+                        speedCounter.NextValue();
+                        usageCounter.NextValue();
                         Thread.Sleep(500);
-                        float perfPercent = counter.NextValue();
-                        cpuSpeed = (perfPercent / 100f) * 3800f;
+
+                        float perfPercent = speedCounter.NextValue();
+                        float utilPercent = usageCounter.NextValue();
+
+                        // fallback for speed if throttled on battery
+                        if (perfPercent < 1)
+                        {
+                            using (var fallback = new PerformanceCounter(
+                                "Processor Information",
+                                "% Processor Time",
+                                "_Total"
+                            ))
+                            {
+                                fallback.NextValue();
+                                Thread.Sleep(200);
+                                perfPercent = fallback.NextValue();
+                            }
+                        }
+
+                        cpuSpeed = Math.Max(400, Math.Min(5100, (perfPercent / 100f) * 3800f));
+
+                        if (utilPercent > 0)
+                            cpuUsage = utilPercent;
                     }
                 }
-                catch { }
+                catch
+                {
+                    // fallback to LHM if performance counters fail
+                    foreach (var sensor in hardware.Sensors)
+                    {
+                        if (sensor.SensorType == SensorType.Load &&
+                            sensor.Name == "CPU Total" &&
+                            sensor.Value.HasValue)
+                        {
+                            cpuUsage = sensor.Value.Value;
+                            break;
+                        }
+                    }
+                }
             }
 
             // ================= GPU =================

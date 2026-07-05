@@ -63,6 +63,7 @@ signals:
 
 private:
     QFutureWatcher<SystemStats> *watcher;
+    QString sensorBridgePath;
 
 };
 
