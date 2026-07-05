@@ -119,36 +119,46 @@ A lightweight, open-source control center for Windows devices, focused on power 
 ---
 
 ## 🧠 Architecture
-main.cpp
-↓ checks admin (manageadmin.cpp)
-↓ relaunches with UAC if needed (--elevated flag prevents loop)
-↓ creates MainWindow
-MainWindow (mainwindow.cpp)
-↓ QTimer fires every 3 seconds
-↓ calls HardwareMonitor::fetchStatsAsync()
-HardwareMonitor (hardwaremonitor.cpp)
-↓ QtConcurrent::run() → background thread
-↓ launches SensorBridge.exe
-↓ reads JSON from stdout
-↓ emits statsReady(stats) signal → main thread
-↓ MainWindow::onStatsReady() updates UI labels
-SensorBridge (C# / .NET 4.8)
-↓ LibreHardwareMonitor → GPU sensors
-↓ WMI Thermal Zone → CPU temperature
-↓ Windows Performance Counters → CPU speed + usage
-↓ outputs JSON to stdout
 
-### Power Management Flow
-Button clicked
-↓ changeMode(mode) — MainWindow
-↓ monitor.setMode(mode) — updates internal state
-↓ monitor.applyPowerMode(mode) — powercfg /setactive
-↓ updateModeUI() — highlights active button
+### Startup Flow
+```
+main.cpp
+├── checks --elevated flag
+├── isRunningAsAdmin() → if not admin, relaunchAsAdmin() with --elevated flag
+└── creates QApplication + MainWindow
+```
+
+### Sensor Reading Flow
+```
+QTimer (every 3s)
+└── HardwareMonitor::fetchStatsAsync()
+    └── QtConcurrent::run() [background thread]
+        └── launches SensorBridge.exe
+            ├── LibreHardwareMonitor  →  GPU temp, usage, speed
+            ├── WMI Thermal Zone      →  CPU temperature
+            └── Performance Counters →  CPU speed + usage
+        └── returns JSON via stdout
+    └── QFutureWatcher::finished signal [back on main thread]
+        └── MainWindow::onStatsReady() → updates UI labels
+```
+
+### Power Scheme Flow
+```
+Scheme button clicked
+└── MainWindow::changeMode(mode)
+    ├── HardwareMonitor::setMode()       → updates internal state
+    ├── HardwareMonitor::applyPowerMode() → powercfg /setactive <GUID>
+    └── updateModeUI()                   → highlights active button
+```
+
+### Power Overlay Flow
+```
 Overlay button clicked
-↓ changeOverlayMode(mode) — MainWindow
-↓ monitor.applyPowerOverlay(mode) — PowerSetActiveOverlayScheme (powrprof.dll)
-↓ monitor.setOverlayMode(mode) — updates internal state
-↓ updateOverlayUI() — highlights active overlay button
+└── MainWindow::changeOverlayMode(mode)
+    ├── HardwareMonitor::applyPowerOverlay() → PowerSetActiveOverlayScheme (powrprof.dll)
+    ├── HardwareMonitor::setOverlayMode()    → updates internal state
+    └── updateOverlayUI()                    → highlights active overlay button
+```
 
 ---
 
